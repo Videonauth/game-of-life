@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+# ---------------------------------------------------------------------------
+# game-of-life
+# ---------------------------------------------------------------------------
+# Author: Videonauth <videonauth@googlemail.com>
+# License: MIT (see LICENSE file)
+# Date: 06.01.22 - 13:40
+# Purpose: Using pygame library to create a version of conways game of life
+# Written for: Python 3.9.5
+# ---------------------------------------------------------------------------
+"""
+Task:
+Create Conways game of life with help of pygame library.
+
+Rules:
+The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, each of which is
+in one of two possible states, live or dead, (or populated and unpopulated, respectively). Every cell interacts
+with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent.
+At each step in time, the following transitions occur:
+
+1. Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+2. Any live cell with two or three live neighbours lives on to the next generation.
+3. Any live cell with more than three live neighbours dies, as if by overpopulation.
+4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+These rules, which compare the behavior of the automaton to real life, can be condensed into the following:
+
+1. Any live cell with two or three live neighbours survives.
+2. Any dead cell with three live neighbours becomes a live cell.
+3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+The initial pattern constitutes the seed of the system. The first generation is created by applying the above rules
+simultaneously to every cell in the seed, live or dead; births and deaths occur simultaneously, and the
+discrete moment at which this happens is sometimes called a tick. Each generation is a pure function of
+the preceding one. The rules continue to be applied repeatedly to create further generations.
+
+Goals:
+- have logging
+- have an initial set state, by user choice.
+- have a proper game loop with error checking and error states.
+- have an option for the game to be run for x amount of frames until it ends, or have it run until user interrupt.
+- have an FPS limiter.
+- have a resizable window.
+- have an option to choose the playing field size
+- have full screen swap option
+- have mouse and keyboard input
+
+Resources:
+python 3.9 documentation: https://docs.python.org/3.9/
+pygame documentation: https://www.pygame.org/docs/
+"""
+import time
+import pygame
+
+if __name__ == '__main__':
+    # init pygame
+    pygame.init()
+
+    # limits frames per second
+    frame_limit = 1/60
+
+    # create window
+    window_size = width, height = 1280, 840
+    window = pygame.display.set_mode(window_size)
+
+    # setup ball image
+    ball = pygame.image.load('assets/images/intro_ball.gif')
+    ball_border = ball.get_rect()
+    ball_speed = [2, 2]
+
+    # setup font
+    font = pygame.font.SysFont(None, 20)
+
+    # setup colours
+    class Colour:
+        black = (0, 0, 0)
+        white = (255, 255, 255)
+    colour = Colour()
+
+    # flush output
+    window.fill(colour.black)
+    pygame.display.flip()
+
+    _last_frame_time = 0
+    _running = True
+    while _running:
+        _t = time.time()
+
+        # event handling for input
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                _running = False
+                continue
+
+        # draw
+        window.fill(colour.black)
+
+        # move and draw the ball
+        ball_border = ball_border.move(ball_speed)
+        if ball_border.left < 0 or ball_border.right > width:
+            ball_speed[0] = -ball_speed[0]
+        if ball_border.top < 0 or ball_border.bottom > height:
+            ball_speed[1] = -ball_speed[1]
+        window.blit(ball, ball_border)
+
+        # output fps
+        if _last_frame_time != 0:
+            text = font.render(f'FPS: {1 / _last_frame_time}', True, colour.white)
+            window.blit(text, (20, 20))
+
+        # wait when to fast
+        while time.time() - _t < frame_limit:
+            pass
+
+        # calculate frame time
+        _t_stop = time.time()
+        _last_frame_time = _t_stop - _t
+
+        # flip screen buffer
+        pygame.display.flip()
+
+
+#         # skip frames if needed
+#         if last_frame_time > 1/fps_limit:
+#             last_frame_time = time.time() - _frame_start_t
+#             continue
