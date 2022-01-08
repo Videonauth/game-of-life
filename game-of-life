@@ -53,7 +53,7 @@ pygame documentation: https://www.pygame.org/docs/
 import time
 import pygame
 
-if __name__ == '__main__':
+def main():
     # init pygame
     pygame.init()
 
@@ -150,3 +150,7 @@ if __name__ == '__main__':
 #         if last_frame_time > 1/fps_limit:
 #             last_frame_time = time.time() - _frame_start_t
 #             continue
+
+
+if __name__ == '__main__':
+    main()
