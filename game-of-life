@@ -144,6 +144,7 @@ def main():
 
         # TODO: create menu UI being drawn switching the different program states
 
+        # set or unset single cells on mouseclick
         if _pressed and not _locked and button == 1:
             if mouse_x < (playfield_width * cell_size) and mouse_y < (playfield_height * cell_size):
                 cell_x = mouse_x // cell_size
