@@ -112,14 +112,14 @@ def main():
     playfield_surface.fill(colour.black)
     pygame.display.flip()
 
-    # injecting data to playfield for testing TODO: remove
-    playfield[1][0] = 1
-    playfield[1][1] = 1
-
     # setting up game loop
     _last_frame_time = 0
     _running = True
     cell_size = height // max(playfield_width, playfield_height)
+    mouse_x = 0
+    mouse_y = 0
+    button = 0
+    _locked = False
     _pressed = False
     while _running:
         _t = time.time()
@@ -129,12 +129,13 @@ def main():
             if event.type == pygame.QUIT:
                 _running = False
                 continue
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                # mouse_x, mouse_y = event.pos
-                # button = event.button
+            if event.type == pygame.MOUSEBUTTONDOWN and not _pressed:
+                mouse_x, mouse_y = event.pos
+                button = event.button
                 _pressed = True
                 # print(f'Button: {button} Position: {mouse_x} x {mouse_y}')
             elif event.type == pygame.MOUSEBUTTONUP:
+                _locked = False
                 _pressed = False
 
         # flush window and surface
@@ -142,12 +143,19 @@ def main():
         playfield_surface.fill(colour.black)
 
         # TODO: create menu UI being drawn switching the different program states
-        # TODO: create set unset state
+
+        if _pressed and not _locked and button == 1:
+            if mouse_x < (playfield_width * cell_size) and mouse_y < (playfield_height * cell_size):
+                cell_x = mouse_x // cell_size
+                cell_y = mouse_y // cell_size
+                if playfield[cell_y][cell_x] == 0:
+                    playfield[cell_y][cell_x] = 1
+                elif playfield[cell_y][cell_x] == 1:
+                    playfield[cell_y][cell_x] = 0
+                _locked = True
 
         # TODO: create simulation
         # TODO: create options UI
-
-        # TODO: draw playfield
 
         # drawing playfield
         start_x = 0
@@ -170,7 +178,7 @@ def main():
         # output fps
         if _last_frame_time != 0:
             text = font.render(f'FPS: {1 / _last_frame_time}', True, colour.white)
-            window.blit(text, (20, 20))
+            window.blit(text, (height + 20, 20))
 
         # wait when to fast
         while time.time() - _t < frame_limit:
