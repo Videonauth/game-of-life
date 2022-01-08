@@ -61,6 +61,11 @@ def generate_playingfield(playfield_height, playfield_width) -> List[List[int]]:
     return [[0 for i in range(playfield_width)] for i in range(playfield_height)]
 
 
+class Colour:
+    black = (0, 0, 0)
+    white = (255, 255, 255)
+
+
 def main():
     # init pygame
     pygame.init()
@@ -79,9 +84,6 @@ def main():
     font = pygame.font.SysFont(None, 20)
 
     # setup colours
-    class Colour:
-        black = (0, 0, 0)
-        white = (255, 255, 255)
     colour = Colour()
 
     # setup playfield to with and height given
