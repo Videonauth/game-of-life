@@ -51,7 +51,15 @@ python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
 import time
+from typing import List
+
 import pygame
+
+
+def generate_playingfield(playfield_height, playfield_width) -> List[List[int]]:
+    """Create a matrix from lists, with the specified height and width."""
+    return [[0 for i in range(playfield_width)] for i in range(playfield_height)]
+
 
 def main():
     # init pygame
@@ -79,12 +87,7 @@ def main():
     # setup playfield to with and height given
     playfield_width = 15
     playfield_height = 15
-    playfield = list()
-    for line in range(0, playfield_height):
-        _output = list()
-        for column in range(0, playfield_width):
-            _output.append(0)
-        playfield.append(_output)
+    playfield = generate_playingfield(playfield_height, playfield_width)
 
     # flush output
     window.fill(colour.black)
