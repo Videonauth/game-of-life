@@ -56,6 +56,13 @@ from typing import List
 import pygame
 
 
+def highest(a: int, b: int) -> int:
+    if a > b:
+        return a
+    else:
+        return b
+
+
 def generate_playingfield(_playfield_height: int, _playfield_width: int) -> List[List[int]]:
     """
     Create a matrix from lists, with the specified height and width.
@@ -90,7 +97,8 @@ def main():
     window = pygame.display.set_mode(window_size)
 
     # setup surface
-    surface = pygame.Surface(window_size)
+    # surface = pygame.Surface(window_size)
+    playfield_surface = pygame.Surface((height, height))
 
     # setup font
     font = pygame.font.SysFont(None, 20)
@@ -99,19 +107,19 @@ def main():
     colour = Colour()
 
     # setup playfield to with and height given
-    playfield_width = 15
-    playfield_height = 15
+    playfield_width = 30
+    playfield_height = 20
     playfield = generate_playingfield(playfield_height, playfield_width)
 
     # flush output
     window.fill(colour.black)
-    surface.fill(colour.black)
+    playfield_surface.fill(colour.black)
     pygame.display.flip()
 
     # setting up game loop
     _last_frame_time = 0
     _running = True
-    _step_size = height // playfield_height
+    cell_size = height // highest(playfield_width, playfield_height)
     _pressed = False
     while _running:
         _t = time.time()
@@ -131,7 +139,8 @@ def main():
 
         # flush window and surface
         window.fill(colour.black)
-        # surface.fill(colour.black)
+        playfield_surface.fill(colour.black)
+
         # TODO: create menu UI being drawn switching the different program states
         # TODO: create set unset state
 
@@ -139,13 +148,18 @@ def main():
         # TODO: create options UI
 
         # TODO: draw playfield
-        # drawing playfield
-        if _pressed:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            # print(f'x: {mouse_x} | y: {mouse_y}')
-            pygame.draw.line(surface, colour.white, (mouse_x, mouse_y), (mouse_x, mouse_y), 1)
 
-        window.blit(surface, (0, 0))
+        # drawing playfield
+        start_x = 0
+        start_y = 0
+        for line in playfield:
+            for cell in line:
+                pygame.draw.rect(playfield_surface, colour.white, (start_x, start_y, cell_size, cell_size), 1)
+                start_x += cell_size
+            start_x = 0
+            start_y += cell_size
+
+        window.blit(playfield_surface, (0, 0))
 
         # output fps
         if _last_frame_time != 0:
