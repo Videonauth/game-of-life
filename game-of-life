@@ -56,15 +56,21 @@ from typing import List
 import pygame
 
 
-def generate_playingfield(playfield_height, playfield_width) -> List[List[int]]:
-    """Create a matrix from lists, with the specified height and width."""
-    if playfield_height <= 0 or playfield_width <= 0:
+def generate_playingfield(_playfield_height: int, _playfield_width: int) -> List[List[int]]:
+    """
+    Create a matrix from lists, with the specified height and width.
+
+    int _playfield_width : matrix size in x direction
+    int _playfield_height : matrix size in y direction
+    return : list[list[], ...] as a matrix
+    """
+    if _playfield_height <= 0 or _playfield_width <= 0:
         raise ValueError("Height and width must be positive")
 
-    if playfield_height == 1 and playfield_width == 1:
+    if _playfield_height == 1 and _playfield_width == 1:
         raise ValueError("At least one dimension must be greater than one")
 
-    return [[0 for _ in range(playfield_width)] for __ in range(playfield_height)]
+    return [[0 for _ in range(_playfield_width)] for __ in range(_playfield_height)]
 
 
 class Colour:
