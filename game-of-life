@@ -56,13 +56,6 @@ from typing import List
 import pygame
 
 
-def highest(a: int, b: int) -> int:
-    if a > b:
-        return a
-    else:
-        return b
-
-
 def generate_playingfield(_playfield_height: int, _playfield_width: int) -> List[List[int]]:
     """
     Create a matrix from lists, with the specified height and width.
@@ -83,6 +76,9 @@ def generate_playingfield(_playfield_height: int, _playfield_width: int) -> List
 class Colour:
     black = (0, 0, 0)
     white = (255, 255, 255)
+    red = (255, 0, 0)
+    green = (0, 255, 0)
+    blue = (0, 0, 255)
 
 
 def main():
@@ -107,7 +103,7 @@ def main():
     colour = Colour()
 
     # setup playfield to with and height given
-    playfield_width = 30
+    playfield_width = 20
     playfield_height = 20
     playfield = generate_playingfield(playfield_height, playfield_width)
 
@@ -116,10 +112,14 @@ def main():
     playfield_surface.fill(colour.black)
     pygame.display.flip()
 
+    # injecting data to playfield for testing TODO: remove
+    playfield[1][0] = 1
+    playfield[1][1] = 1
+
     # setting up game loop
     _last_frame_time = 0
     _running = True
-    cell_size = height // highest(playfield_width, playfield_height)
+    cell_size = height // max(playfield_width, playfield_height)
     _pressed = False
     while _running:
         _t = time.time()
@@ -133,7 +133,7 @@ def main():
                 # mouse_x, mouse_y = event.pos
                 # button = event.button
                 _pressed = True
-                # print(f'Button: {button} Position: {mousex} x {mousey}')
+                # print(f'Button: {button} Position: {mouse_x} x {mouse_y}')
             elif event.type == pygame.MOUSEBUTTONUP:
                 _pressed = False
 
@@ -154,7 +154,13 @@ def main():
         start_y = 0
         for line in playfield:
             for cell in line:
-                pygame.draw.rect(playfield_surface, colour.white, (start_x, start_y, cell_size, cell_size), 1)
+                if cell == 0:
+                    pygame.draw.rect(playfield_surface, colour.white, (start_x, start_y, cell_size, cell_size), 1)
+                elif cell == 1:
+                    pygame.draw.rect(playfield_surface, colour.blue, (start_x, start_y, cell_size, cell_size))
+                    pygame.draw.rect(playfield_surface, colour.white, (start_x, start_y, cell_size, cell_size), 1)
+                else:
+                    pass
                 start_x += cell_size
             start_x = 0
             start_y += cell_size
