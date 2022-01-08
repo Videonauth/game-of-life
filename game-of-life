@@ -64,10 +64,8 @@ if __name__ == '__main__':
     window_size = width, height = 1280, 840
     window = pygame.display.set_mode(window_size)
 
-    # setup ball image
-    ball = pygame.image.load('assets/images/intro_ball.gif')
-    ball_border = ball.get_rect()
-    ball_speed = [2, 2]
+    # setup surface
+    surface = pygame.Surface(window_size)
 
     # setup font
     font = pygame.font.SysFont(None, 20)
@@ -78,12 +76,26 @@ if __name__ == '__main__':
         white = (255, 255, 255)
     colour = Colour()
 
+    # setup playfield to with and height given
+    playfield_width = 15
+    playfield_height = 15
+    playfield = list()
+    for line in range(0, playfield_height):
+        _output = list()
+        for column in range(0, playfield_width):
+            _output.append(0)
+        playfield.append(_output)
+
     # flush output
     window.fill(colour.black)
+    surface.fill(colour.black)
     pygame.display.flip()
 
+    # setting up game loop
     _last_frame_time = 0
     _running = True
+    _step_size = height // playfield_height
+    _pressed = False
     while _running:
         _t = time.time()
 
@@ -92,17 +104,31 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 _running = False
                 continue
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # mouse_x, mouse_y = event.pos
+                # button = event.button
+                _pressed = True
+                # print(f'Button: {button} Position: {mousex} x {mousey}')
+            elif event.type == pygame.MOUSEBUTTONUP:
+                _pressed = False
 
-        # draw
+        # flush window and surface
         window.fill(colour.black)
+        # surface.fill(colour.black)
+        # TODO: create menu UI being drawn switching the different program states
+        # TODO: create set unset state
 
-        # move and draw the ball
-        ball_border = ball_border.move(ball_speed)
-        if ball_border.left < 0 or ball_border.right > width:
-            ball_speed[0] = -ball_speed[0]
-        if ball_border.top < 0 or ball_border.bottom > height:
-            ball_speed[1] = -ball_speed[1]
-        window.blit(ball, ball_border)
+        # TODO: create simulation
+        # TODO: create options UI
+
+        # TODO: draw playfield
+        # drawing playfield
+        if _pressed:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            # print(f'x: {mouse_x} | y: {mouse_y}')
+            pygame.draw.line(surface, colour.white, (mouse_x, mouse_y), (mouse_x, mouse_y), 1)
+
+        window.blit(surface, (0, 0))
 
         # output fps
         if _last_frame_time != 0:
@@ -119,7 +145,6 @@ if __name__ == '__main__':
 
         # flip screen buffer
         pygame.display.flip()
-
 
 #         # skip frames if needed
 #         if last_frame_time > 1/fps_limit:
