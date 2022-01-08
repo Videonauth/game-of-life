@@ -1,6 +1,9 @@
-.idea/
 bin/
+.idea/
 include/
 lib/
-pyvenv.cfg
 __pycache__
+pyvenv.cfg
+*.swo
+*.swp
+.venv/

@@ -1,0 +1,12 @@
+[flake8]
+exclude = \
+    bin         \
+    bot-dev2.py \
+    bot-dev.py  \
+    include     \
+    lib         \
+    old         \
+    share       \
+    .venv
+ignore = F401
+max-line-length = 120

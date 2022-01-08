@@ -51,9 +51,22 @@ python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
 import time
+from typing import List
+
 import pygame
 
-if __name__ == '__main__':
+
+def generate_playingfield(playfield_height, playfield_width) -> List[List[int]]:
+    """Create a matrix from lists, with the specified height and width."""
+    return [[0 for i in range(playfield_width)] for i in range(playfield_height)]
+
+
+class Colour:
+    black = (0, 0, 0)
+    white = (255, 255, 255)
+
+
+def main():
     # init pygame
     pygame.init()
 
@@ -71,20 +84,12 @@ if __name__ == '__main__':
     font = pygame.font.SysFont(None, 20)
 
     # setup colours
-    class Colour:
-        black = (0, 0, 0)
-        white = (255, 255, 255)
     colour = Colour()
 
     # setup playfield to with and height given
     playfield_width = 15
     playfield_height = 15
-    playfield = list()
-    for line in range(0, playfield_height):
-        _output = list()
-        for column in range(0, playfield_width):
-            _output.append(0)
-        playfield.append(_output)
+    playfield = generate_playingfield(playfield_height, playfield_width)
 
     # flush output
     window.fill(colour.black)
@@ -150,3 +155,7 @@ if __name__ == '__main__':
 #         if last_frame_time > 1/fps_limit:
 #             last_frame_time = time.time() - _frame_start_t
 #             continue
+
+
+if __name__ == '__main__':
+    main()
