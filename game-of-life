@@ -56,6 +56,7 @@ pygame documentation: https://www.pygame.org/docs/
 import time
 
 from Playfield import generate_playfield
+from Playfield import generate_seeded_playfield
 
 import pygame
 
@@ -91,7 +92,7 @@ def main():
     window = pygame.display.set_mode(window_size)
 
     # setup surface
-    playfield_surface = pygame.Surface((height, height))
+    playfield_surface = pygame.Surface((height - 20, height - 20))
     menu_surface = pygame.Surface((width - height, height))
 
     # setup font
@@ -106,6 +107,11 @@ def main():
     menu_surface.blit(text, (20, 50))
     pygame.draw.line(menu_surface, colour.white, (10, 65), (width - height - 10, 65), 1)
     pygame.draw.line(menu_surface, colour.white, (10, 70), (width - height - 10, 70), 1)
+    text = font.render('Random Seed', True, colour.white)
+    button_random_abs_position = (height + 10, 70, width - 10, 90)
+    menu_surface.blit(text, (20, 75))
+    pygame.draw.line(menu_surface, colour.white, (10, 90), (width - height - 10, 90), 1)
+    pygame.draw.line(menu_surface, colour.white, (10, 95), (width - height - 10, 95), 1)
 
     # setup playfield to with and height given
     playfield_width = 20
@@ -120,7 +126,7 @@ def main():
     # setting up game loop
     _last_frame_time = 0
     _running = True
-    cell_size = height // max(playfield_width, playfield_height)
+    cell_size = (height - 20) // max(playfield_width, playfield_height)
     mouse_x = 0
     mouse_y = 0
     button = 0
@@ -157,6 +163,12 @@ def main():
             if button_clear_abs_position[2] > mouse_x > button_clear_abs_position[0]:
                 if button_clear_abs_position[3] > mouse_y > button_clear_abs_position[1]:
                     playfield = generate_playfield(playfield_height, playfield_width)
+            # menu random
+            if button_random_abs_position[2] > mouse_x > button_random_abs_position[0]:
+                if button_random_abs_position[3] > mouse_y > button_random_abs_position[1]:
+                    playfield = generate_seeded_playfield(playfield_height,
+                                                          playfield_width,
+                                                          int(playfield_height * playfield_width * 0.5))
             _locked = True
 
         # simulate (one mouseclick equals one generation change)
@@ -212,7 +224,7 @@ def main():
             start_x = 0
             start_y += cell_size
 
-        window.blit(playfield_surface, (0, 0))
+        window.blit(playfield_surface, (10, 10))
         window.blit(menu_surface, (height + 1, 0))
 
         # output fps
