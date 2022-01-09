@@ -9,7 +9,10 @@
 # Purpose: Using pygame library to create a version of conways game of life
 # Written for: Python 3.9.5
 # ---------------------------------------------------------------------------
+
 """
+Conways Game of Life.
+
 Task:
 Create Conways game of life with help of pygame library.
 
@@ -51,9 +54,9 @@ python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
 import time
-from typing import Any, List
 from collections import namedtuple
 from random import sample
+from typing import Any, List
 
 import pygame
 
@@ -67,10 +70,10 @@ def generate_playingfield(_playfield_height: int, _playfield_width: int) -> List
     return : list[list[], ...] as a matrix
     """
     if _playfield_height <= 0 or _playfield_width <= 0:
-        raise ValueError("Height and width must be positive")
+        raise ValueError('Height and width must be positive')
 
     if _playfield_height == 1 and _playfield_width == 1:
-        raise ValueError("At least one dimension must be greater than one")
+        raise ValueError('At least one dimension must be greater than one')
 
     return [[0 for _ in range(_playfield_width)] for __ in range(_playfield_height)]
 
@@ -118,6 +121,8 @@ def generate_seeded_playingfield(
 
 
 class Colour:
+    """Containing all color definitions."""
+
     black = (0, 0, 0)
     white = (255, 255, 255)
     red = (255, 0, 0)
@@ -130,18 +135,22 @@ colour = Colour()
 
 
 def main():
+    """
+    Initiate Conway's Game Of Life (GoL).
+
+    Proxy to the game logic.
+    """
     # init pygame
     pygame.init()
 
     # limits frames per second
-    frame_limit = 1/60
+    frame_limit = 1 / 60
 
     # create window
     window_size = width, height = 1280, 840
     window = pygame.display.set_mode(window_size)
 
     # setup surface
-    # surface = pygame.Surface(window_size)
     playfield_surface = pygame.Surface((height, height))
     menu_surface = pygame.Surface((width - height, height))
 
@@ -189,7 +198,6 @@ def main():
                 mouse_x, mouse_y = event.pos
                 button = event.button
                 _pressed = True
-                # print(f'Button: {button} Position: {mouse_x} x {mouse_y}')
             elif event.type == pygame.MOUSEBUTTONUP:
                 _locked = False
                 _pressed = False
@@ -197,8 +205,6 @@ def main():
         # flush window and surface
         window.fill(colour.black)
         playfield_surface.fill(colour.black)
-
-        # TODO: create menu UI being drawn switching the different program states
 
         # set or unset single cells on mouseclick
         if _pressed and not _locked and button == 1:
@@ -216,9 +222,9 @@ def main():
         # simulate (one mouseclick equals one generation change)
         if _pressed and not _locked and button == 3:
             _locked = True
-            _new_playfield = list()
+            _new_playfield = []
             for line in range(playfield_height):
-                _new_line = list()
+                _new_line = []
                 for cell in range(playfield_width):
                     cell_current = playfield[line][cell]
                     neighbours_current = 0
@@ -249,8 +255,6 @@ def main():
                     _new_line.append(cell_out)
                 _new_playfield.append(_new_line)
             playfield = _new_playfield
-
-        # TODO: create options UI
 
         # drawing playfield
         start_x = 0
@@ -287,10 +291,10 @@ def main():
         # flip screen buffer
         pygame.display.flip()
 
-#         # skip frames if needed
-#         if last_frame_time > 1/fps_limit:
-#             last_frame_time = time.time() - _frame_start_t
-#             continue
+# s        # skip frames if needed
+# s        if last_frame_time > 1/fps_limit:
+# s            last_frame_time = time.time() - _frame_start_t
+# s            continue
 
 
 if __name__ == '__main__':
