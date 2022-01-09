@@ -150,9 +150,45 @@ def main():
                 cell_x = mouse_x // cell_size
                 cell_y = mouse_y // cell_size
                 playfield[cell_y][cell_x] = playfield[cell_y][cell_x] ^ 1
-                _locked = True
+            _locked = True
 
-        # TODO: create simulation
+        # simulate (one mouseclick equals one generation change)
+        if _pressed and not _locked and button == 3:
+            _locked = True
+            _new_playfield = list()
+            for line in range(playfield_height):
+                _new_line = list()
+                for cell in range(playfield_width):
+                    cell_current = playfield[line][cell]
+                    neighbours_current = 0
+                    if not line - 1 < 0 and not cell - 1 < 0:
+                        neighbours_current += playfield[line - 1][cell - 1]
+                    if not line - 1 < 0 and not cell < 0:
+                        neighbours_current += playfield[line - 1][cell]
+                    if not line - 1 < 0 and not cell + 1 > playfield_width - 1:
+                        neighbours_current += playfield[line - 1][cell + 1]
+                    if not line < 0 and not cell - 1 < 0:
+                        neighbours_current += playfield[line][cell - 1]
+                    if not line < 0 and not cell + 1 > playfield_width - 1:
+                        neighbours_current += playfield[line][cell + 1]
+                    if not line + 1 > playfield_height - 1 and not cell - 1 < 0:
+                        neighbours_current += playfield[line + 1][cell - 1]
+                    if not line + 1 > playfield_height - 1 and not cell < 0:
+                        neighbours_current += playfield[line + 1][cell]
+                    if not line + 1 > playfield_height - 1 and not cell + 1 > playfield_width - 1:
+                        neighbours_current += playfield[line + 1][cell + 1]
+                    if cell_current == 1 and neighbours_current < 2:
+                        cell_out = 0
+                    elif cell_current == 1 and neighbours_current > 3:
+                        cell_out = 0
+                    elif cell_current == 0 and neighbours_current == 3:
+                        cell_out = 1
+                    else:
+                        cell_out = cell_current
+                    _new_line.append(cell_out)
+                _new_playfield.append(_new_line)
+            playfield = _new_playfield
+
         # TODO: create options UI
 
         # drawing playfield
