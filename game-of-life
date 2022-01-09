@@ -81,6 +81,10 @@ class Colour:
     blue = (0, 0, 255)
 
 
+# setup colours
+colour = Colour()
+
+
 def main():
     # init pygame
     pygame.init()
@@ -95,12 +99,20 @@ def main():
     # setup surface
     # surface = pygame.Surface(window_size)
     playfield_surface = pygame.Surface((height, height))
+    menu_surface = pygame.Surface((width - height, height))
 
     # setup font
     font = pygame.font.SysFont(None, 20)
 
-    # setup colours
-    colour = Colour()
+    # pre-draw menu surface
+    pygame.draw.rect(menu_surface, colour.white, (10, 10, width - height - 20, height - 20), 1)
+    pygame.draw.line(menu_surface, colour.white, (10, 40), (width - height - 10, 40), 1)
+    pygame.draw.line(menu_surface, colour.white, (10, 45), (width - height - 10, 45), 1)
+    text = font.render(f'Clear', True, colour.white)
+    button_clear_abs_position = (height + 10, 45, width - 10, 65)
+    menu_surface.blit(text, (20, 50))
+    pygame.draw.line(menu_surface, colour.white, (10, 65), (width - height - 10, 65), 1)
+    pygame.draw.line(menu_surface, colour.white, (10, 70), (width - height - 10, 70), 1)
 
     # setup playfield to with and height given
     playfield_width = 20
@@ -146,10 +158,15 @@ def main():
 
         # set or unset single cells on mouseclick
         if _pressed and not _locked and button == 1:
+            # set / unset
             if mouse_x < (playfield_width * cell_size) and mouse_y < (playfield_height * cell_size):
                 cell_x = mouse_x // cell_size
                 cell_y = mouse_y // cell_size
                 playfield[cell_y][cell_x] = playfield[cell_y][cell_x] ^ 1
+            # menu clear
+            if button_clear_abs_position[2] > mouse_x > button_clear_abs_position[0]:
+                if button_clear_abs_position[3] > mouse_y > button_clear_abs_position[1]:
+                    playfield = generate_playingfield(playfield_height, playfield_width)
             _locked = True
 
         # simulate (one mouseclick equals one generation change)
@@ -208,6 +225,7 @@ def main():
             start_y += cell_size
 
         window.blit(playfield_surface, (0, 0))
+        window.blit(menu_surface, (height + 1, 0))
 
         # output fps
         if _last_frame_time != 0:
