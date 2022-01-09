@@ -16,7 +16,7 @@ def simulation(playfield: list) -> list:
     """Simulate a playfield for one generation step."""
     _playfield_height = len(playfield)
     _playfield_width = len(playfield[0])
-    _new_playfield = []
+    new_playfield = []
     for _line in range(_playfield_height):
         _new_line = []
         for _cell in range(_playfield_width):
@@ -49,8 +49,8 @@ def simulation(playfield: list) -> list:
             else:
                 cell_out = _cell_current
             _new_line.append(cell_out)
-        _new_playfield.append(_new_line)
-    return _new_playfield
+        new_playfield.append(_new_line)
+    return new_playfield
 
 
 if __name__ == '__main__':
