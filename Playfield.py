@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""Playingfielf factories and manipulation."""
+"""Playfield factories and manipulation."""
 
 from collections import namedtuple
 from random import sample
