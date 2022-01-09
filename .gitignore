@@ -7,3 +7,5 @@ pyvenv.cfg
 *.swo
 *.swp
 .venv/
+.mypy_cache/
+.pytest_cache/
