@@ -121,7 +121,7 @@ def generate_seeded_playingfield(
 
 
 class Colour:
-    """Containing all color definitions."""
+    """Containing all colour definitions."""
 
     black = (0, 0, 0)
     white = (255, 255, 255)
