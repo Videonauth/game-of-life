@@ -8,5 +8,5 @@ exclude = \
     old         \
     share       \
     .venv
-ignore = F401
+ignore = T001
 max-line-length = 120
