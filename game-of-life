@@ -56,7 +56,7 @@ pygame documentation: https://www.pygame.org/docs/
 import time
 from collections import namedtuple
 from random import sample
-from typing import Any, List
+from typing import List
 
 import pygame
 
@@ -82,7 +82,7 @@ Cell = namedtuple('Cell', ['row', 'cell'])
 
 
 def serialize_playfield(_playfield: List[List[int]]) -> str:
-    """Create a string represenation of the playfield."""
+    """Create a string representation of the playfield."""
     _max_width = 3
     _field = []
     for _row in _playfield:
@@ -96,7 +96,7 @@ def generate_seeded_playingfield(
     _playfield_width: int,
     _number_of_seeded_cells: int,
 ) -> List[List[int]]:
-    """Create a seeded a playfield."""
+    """Create a seeded playfield."""
     # Create an initial playfield
     _playfield = generate_playingfield(_playfield_height, _playfield_width)
 
@@ -106,10 +106,10 @@ def generate_seeded_playingfield(
     # Validate the _number_of_seeded_cells input
     _playfield_size = _playfield_height * _playfield_width
     if _number_of_seeded_cells < 0:
-        raise ValueError('_number_of_seeded_cells too small: must be in the range [0, {}]'.format(_playfield_size))
+        raise ValueError(f'_number_of_seeded_cells too small: must be in the range [0, {_playfield_size}]')
 
     if _number_of_seeded_cells > (_playfield_height * _playfield_width):
-        raise ValueError('_number_of_seeded_cells too large: must be in the range [0, {}]'.format(_playfield_size))
+        raise ValueError(f'_number_of_seeded_cells too large: must be in the range [0, {_playfield_size}]')
 
     # Determine and activate a random sample of cells
     _full_set = [Cell(row, cell) for row in range(_playfield_height) for cell in range(_playfield_width)]
