@@ -51,7 +51,9 @@ python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
 import time
-from typing import List
+from typing import Any, List
+from collections import namedtuple
+from random import sample
 
 import pygame
 
@@ -71,6 +73,48 @@ def generate_playingfield(_playfield_height: int, _playfield_width: int) -> List
         raise ValueError("At least one dimension must be greater than one")
 
     return [[0 for _ in range(_playfield_width)] for __ in range(_playfield_height)]
+
+
+Cell = namedtuple('Cell', ['row', 'cell'])
+
+
+def serialize_playfield(_playfield: List[List[int]]) -> str:
+    """Create a string represenation of the playfield."""
+    _max_width = 3
+    _field = []
+    for _row in _playfield:
+        _field.append(''.join([str(_cell).ljust(_max_width) for _cell in _row]))
+
+    return '\n'.join(_field)
+
+
+def generate_seeded_playingfield(
+    _playfield_height: int,
+    _playfield_width: int,
+    _number_of_seeded_cells: int,
+) -> List[List[int]]:
+    """Create a seeded a playfield."""
+    # Create an initial playfield
+    _playfield = generate_playingfield(_playfield_height, _playfield_width)
+
+    # Cast to int to be sure
+    _number_of_seeded_cells = int(_number_of_seeded_cells)
+
+    # Validate the _number_of_seeded_cells input
+    _playfield_size = _playfield_height * _playfield_width
+    if _number_of_seeded_cells < 0:
+        raise ValueError('_number_of_seeded_cells too small: must be in the range [0, {}]'.format(_playfield_size))
+
+    if _number_of_seeded_cells > (_playfield_height * _playfield_width):
+        raise ValueError('_number_of_seeded_cells too large: must be in the range [0, {}]'.format(_playfield_size))
+
+    # Determine and activate a random sample of cells
+    _full_set = [Cell(row, cell) for row in range(_playfield_height) for cell in range(_playfield_width)]
+    _cells_to_seed = sample(_full_set, _number_of_seeded_cells)
+    for _cell_to_seed in _cells_to_seed:
+        _playfield[_cell_to_seed.row][_cell_to_seed.cell] = 1
+
+    return _playfield
 
 
 class Colour:
