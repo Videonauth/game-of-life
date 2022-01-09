@@ -55,7 +55,7 @@ pygame documentation: https://www.pygame.org/docs/
 """
 import time
 
-from Playingfield import generate_playingfield
+from Playfield import generate_playfield
 
 import pygame
 
@@ -110,7 +110,7 @@ def main():
     # setup playfield to with and height given
     playfield_width = 20
     playfield_height = 20
-    playfield = generate_playingfield(playfield_height, playfield_width)
+    playfield = generate_playfield(playfield_height, playfield_width)
 
     # flush output
     window.fill(colour.black)
@@ -156,7 +156,7 @@ def main():
             # menu clear
             if button_clear_abs_position[2] > mouse_x > button_clear_abs_position[0]:
                 if button_clear_abs_position[3] > mouse_y > button_clear_abs_position[1]:
-                    playfield = generate_playingfield(playfield_height, playfield_width)
+                    playfield = generate_playfield(playfield_height, playfield_width)
             _locked = True
 
         # simulate (one mouseclick equals one generation change)

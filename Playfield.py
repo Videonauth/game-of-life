@@ -8,7 +8,7 @@ from random import sample
 from typing import List
 
 
-def generate_playingfield(_playfield_height: int, _playfield_width: int) -> List[List[int]]:
+def generate_playfield(_playfield_height: int, _playfield_width: int) -> List[List[int]]:
     """
     Create a matrix from lists, with the specified height and width.
 
@@ -38,14 +38,14 @@ def serialize_playfield(_playfield: List[List[int]]) -> str:
     return '\n'.join(_field)
 
 
-def generate_seeded_playingfield(
+def generate_seeded_playfield(
     _playfield_height: int,
     _playfield_width: int,
     _number_of_seeded_cells: int,
 ) -> List[List[int]]:
     """Create a seeded playfield."""
     # Create an initial playfield
-    _playfield = generate_playingfield(_playfield_height, _playfield_width)
+    _playfield = generate_playfield(_playfield_height, _playfield_width)
 
     # Cast to int to be sure
     _number_of_seeded_cells = int(_number_of_seeded_cells)
