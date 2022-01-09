@@ -58,6 +58,8 @@ import time
 from Playfield import generate_playfield
 from Playfield import generate_seeded_playfield
 
+from modules.simulation import simulation
+
 import pygame
 
 
@@ -174,39 +176,7 @@ def main():
         # simulate (one mouseclick equals one generation change)
         if _pressed and not _locked and button == 3:
             _locked = True
-            _new_playfield = []
-            for line in range(playfield_height):
-                _new_line = []
-                for cell in range(playfield_width):
-                    cell_current = playfield[line][cell]
-                    neighbours_current = 0
-                    if not line - 1 < 0 and not cell - 1 < 0:
-                        neighbours_current += playfield[line - 1][cell - 1]
-                    if not line - 1 < 0 and not cell < 0:
-                        neighbours_current += playfield[line - 1][cell]
-                    if not line - 1 < 0 and not cell + 1 > playfield_width - 1:
-                        neighbours_current += playfield[line - 1][cell + 1]
-                    if not line < 0 and not cell - 1 < 0:
-                        neighbours_current += playfield[line][cell - 1]
-                    if not line < 0 and not cell + 1 > playfield_width - 1:
-                        neighbours_current += playfield[line][cell + 1]
-                    if not line + 1 > playfield_height - 1 and not cell - 1 < 0:
-                        neighbours_current += playfield[line + 1][cell - 1]
-                    if not line + 1 > playfield_height - 1 and not cell < 0:
-                        neighbours_current += playfield[line + 1][cell]
-                    if not line + 1 > playfield_height - 1 and not cell + 1 > playfield_width - 1:
-                        neighbours_current += playfield[line + 1][cell + 1]
-                    if cell_current == 1 and neighbours_current < 2:
-                        cell_out = 0
-                    elif cell_current == 1 and neighbours_current > 3:
-                        cell_out = 0
-                    elif cell_current == 0 and neighbours_current == 3:
-                        cell_out = 1
-                    else:
-                        cell_out = cell_current
-                    _new_line.append(cell_out)
-                _new_playfield.append(_new_line)
-            playfield = _new_playfield
+            playfield = simulation(playfield)
 
         # drawing playfield
         start_x = 0
