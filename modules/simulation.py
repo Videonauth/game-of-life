@@ -9,7 +9,11 @@
 # Written for: Python 3.9.5
 # ---------------------------------------------------------------------------
 
+"""Conways game of life simulation function."""
+
+
 def simulation(playfield: list) -> list:
+    """Simulate a playfield for one generation step."""
     _playfield_height = len(playfield)
     _playfield_width = len(playfield[0])
     _new_playfield = []
