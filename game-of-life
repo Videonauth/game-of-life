@@ -161,7 +161,7 @@ def main():
     pygame.draw.rect(menu_surface, colour.white, (10, 10, width - height - 20, height - 20), 1)
     pygame.draw.line(menu_surface, colour.white, (10, 40), (width - height - 10, 40), 1)
     pygame.draw.line(menu_surface, colour.white, (10, 45), (width - height - 10, 45), 1)
-    text = font.render(f'Clear', True, colour.white)
+    text = font.render('Clear', True, colour.white)
     button_clear_abs_position = (height + 10, 45, width - 10, 65)
     menu_surface.blit(text, (20, 50))
     pygame.draw.line(menu_surface, colour.white, (10, 65), (width - height - 10, 65), 1)
