@@ -68,9 +68,11 @@ class GUI:
 
     def __init__(self, caption: str, window_size: tuple, fps: int):
         """Ipsum dolor lorem sit amet ..."""
+        # storing window dimensions for internal use
+        self._window_size = window_size
         self._window_width = window_size[0]
         self._window_height = window_size[1]
-        # calculate frame limit
+        # calculate frame limit storing outward facing
         self.frame_limit = 1 / fps
         # init pygame
         pygame.init()
