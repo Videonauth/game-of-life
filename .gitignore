@@ -9,3 +9,4 @@ pyvenv.cfg
 .venv/
 .mypy_cache/
 .pytest_cache/
+/test-log.txt
