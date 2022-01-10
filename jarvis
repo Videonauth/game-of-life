@@ -3,10 +3,14 @@
 
 declare -r VenvDir='./.venv/bin'
 
-
 echo_err() {
     printf '\x1b[31mErr:\x1b[0m %s\n' "$*"
 }
+
+if [[ ! -d "${VenvDir}" ]]; then
+    echo_err "Jarvis could not find the virtual environment directory ${VenvDir}"
+    exit 1
+fi
 
 activate-venv() {
     # shellcheck disable=SC1090
