@@ -61,16 +61,18 @@ from modules.playfield import generate_playfield
 from modules.playfield import generate_seeded_playfield
 from modules.simulation import simulation
 
-# setup colours
-colour = Colour()
-
 
 class GUI:
-    def __init__(self, _window_width: int, _window_height: int):
-        self._window_width = _window_width
-        self._window_height = _window_height
-
-        pass
+    def __init__(self, caption: str, window_size: tuple, fps: int):
+        self._window_width = window_size[0]
+        self._window_height = window_size[1]
+        # calculate frame limit
+        self.frame_limit = 1 / fps
+        # init pygame
+        pygame.init()
+        # create and name window
+        self.window = pygame.display.set_mode(window_size)
+        pygame.display.set_caption(caption)
 
 
 def main():
@@ -79,15 +81,12 @@ def main():
 
     Proxy to the game logic.
     """
-    # init pygame
-    pygame.init()
+    # initialize colour class
+    colour = Colour()
 
-    # limits frames per second
-    frame_limit = 1 / 60
-
-    # create window
+    # define window size and initialize GUI
     window_size = width, height = 1280, 840
-    window = pygame.display.set_mode(window_size)
+    gui = GUI("Conway's Game Of Life", window_size, 60)
 
     # setup surface
     playfield_surface = pygame.Surface((height - 20, height - 20))
@@ -117,7 +116,7 @@ def main():
     playfield = generate_playfield(playfield_height, playfield_width)
 
     # flush output
-    window.fill(colour.black)
+    gui.window.fill(colour.black)
     playfield_surface.fill(colour.black)
     pygame.display.flip()
 
@@ -147,7 +146,7 @@ def main():
                 _pressed = False
 
         # flush window and surface
-        window.fill(colour.black)
+        gui.window.fill(colour.black)
         playfield_surface.fill(colour.black)
 
         # set or unset single cells on mouseclick
@@ -190,16 +189,16 @@ def main():
             start_x = 0
             start_y += cell_size
 
-        window.blit(playfield_surface, (10, 10))
-        window.blit(menu_surface, (height + 1, 0))
+        gui.window.blit(playfield_surface, (10, 10))
+        gui.window.blit(menu_surface, (height + 1, 0))
 
         # output fps
         if _last_frame_time != 0:
             text = font.render(f'FPS: {1 / _last_frame_time}', True, colour.white)
-            window.blit(text, (height + 20, 20))
+            gui.window.blit(text, (height + 20, 20))
 
         # wait when to fast
-        while time.time() - _t < frame_limit:
+        while time.time() - _t < gui.frame_limit:
             pass
 
         # calculate frame time
