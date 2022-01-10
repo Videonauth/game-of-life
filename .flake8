@@ -3,8 +3,6 @@ exclude = \
     bin         \
     include     \
     lib         \
-    old         \
-    share       \
     .venv
 ignore = T001
 max-line-length = 120
