@@ -32,8 +32,12 @@ def serialize_playfield(_playfield: List[List[int]]) -> str:
     """Create a string representation of the playfield."""
     _max_width = 3
     _field = []
+    if not isinstance(_playfield, list):
+        raise ValueError('_playfield is not a list')
     for _row in _playfield:
-        _field.append(''.join([str(_cell).ljust(_max_width) for _cell in _row]))
+        if not isinstance(_row, list):
+            raise ValueError('_playfield is not a list of lists')
+        _field.append(''.join([str(_cell).ljust(_max_width) for _cell in _row]).strip())
 
     return '\n'.join(_field)
 
