@@ -1,0 +1,132 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+
+declare -r VenvDir='./.venv/bin'
+
+
+echo_err() {
+    printf '\x1b[31mErr:\x1b[0m %s\n' "$*"
+}
+
+activate-venv() {
+    # shellcheck disable=SC1090
+    if ! source "${VenvDir}/activate"; then
+        echo_err "Failed to activate venv"
+        return 1
+    fi
+    return 0
+}
+
+install-dependencies() {
+   pip install -r requirements.txt
+   return
+}
+
+pull-remotes() {
+    local Branch
+    local branch
+
+    if ! Branch="$(git rev-parse --abbrev-ref HEAD)"; then
+        echo_err 'Failed to get branch name'
+        return 1
+    fi
+
+    if ! git pull --all; then
+        echo_err 'Failed to pull all remotes'
+        return 1
+    fi
+
+    for branch in master developtment dwd Videonauth; do
+        if ! git checkout "${branch}"; then
+            echo_err "Failed to checkout branch ${branch}"
+            return 1
+        fi
+
+        if ! git pull; then
+            echo_err "Failed to pul on branch ${branch}"
+            return 1
+        fi
+    done
+
+    if ! git checkout "${Branch}"; then
+        echo_err "Failed to move back to branch ${Branch}"
+        return 1
+    fi
+
+    return 0
+}
+
+tests() {
+    export MYPYPATH="${MYPYPATH}:./"
+    pytest --flake8 --mypy --color=yes "$@" |& tee test-log.txt
+    return
+}
+
+show-tree() {
+    tree -I __pycache__
+    return
+}
+
+usage() {
+    read -r -d '' VAR <<EOF
+Usage:
+    ${BASH_SOURCE[0]} Action [Options]
+
+Actions: 
+    help|--help|-h|h  Display this help text
+    intsall           Install the project dependencies
+    sync              Synchronise local branches with the remotes
+    test              Run project tests
+    tree              Show project contents
+EOF
+    printf '%s\n' "${VAR}"
+    return 0
+}
+
+main() {
+    Action="${1}"
+    readonly Action
+    shift
+
+    if ! activate-venv; then
+        exit 1
+    fi
+
+    case "${Action}" in
+        help|--help|-h|h)
+            usage
+            ;;
+
+        install)
+            install-dependencies
+            exit
+            ;;
+
+        sync)
+            pull-remotes
+            exit
+            ;;
+
+        test)
+            tests "$@"
+            exit
+            ;;
+
+        tree)
+            show-tree
+            exit
+            ;;
+
+        *)
+            echo_err "Unknown option"
+            usage
+            exit 1
+            ;;
+    esac
+    return
+}
+
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi
