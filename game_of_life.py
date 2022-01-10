@@ -54,16 +54,20 @@ python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
 import time
-import pygame
 
 from modules.colour import Colour
 from modules.playfield import generate_playfield
 from modules.playfield import generate_seeded_playfield
 from modules.simulation import simulation
 
+import pygame
+
 
 class GUI:
+    """Lorem ipsum dolor sit amet ..."""
+
     def __init__(self, caption: str, window_size: tuple, fps: int):
+        """Ipsum dolor lorem sit amet ..."""
         self._window_width = window_size[0]
         self._window_height = window_size[1]
         # calculate frame limit
