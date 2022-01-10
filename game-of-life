@@ -56,10 +56,9 @@ pygame documentation: https://www.pygame.org/docs/
 import time
 import pygame
 
-from Playfield import generate_playfield
-from Playfield import generate_seeded_playfield
-
 from modules.colour import Colour
+from modules.generators import generate_playfield
+from modules.generators import generate_seeded_playfield
 from modules.simulation import simulation
 
 # setup colours
