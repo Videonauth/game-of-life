@@ -3,7 +3,7 @@
 
 """Testsuite for generate_playfield."""
 
-from Playfield import generate_playfield
+from modules.generators import generate_playfield
 
 import pytest
 
