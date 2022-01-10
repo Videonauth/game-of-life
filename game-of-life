@@ -54,24 +54,13 @@ python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
 import time
+import pygame
 
 from Playfield import generate_playfield
 from Playfield import generate_seeded_playfield
 
+from modules.colour import Colour
 from modules.simulation import simulation
-
-import pygame
-
-
-class Colour:
-    """Containing all colour definitions."""
-
-    black = (0, 0, 0)
-    white = (255, 255, 255)
-    red = (255, 0, 0)
-    green = (0, 255, 0)
-    blue = (0, 0, 255)
-
 
 # setup colours
 colour = Colour()
