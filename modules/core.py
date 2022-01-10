@@ -22,11 +22,12 @@ import os
 import subprocess
 import time
 from contextlib import suppress
+from typing import Any, List, Optional
 
 __version__ = '0.0.19'
 
 
-def bash_command(command: list) -> str or None:
+def bash_command(command: list) -> Optional[str]:
     """
     Run external commands.
 
@@ -36,7 +37,7 @@ def bash_command(command: list) -> str or None:
     _new_env = dict(os.environ)
     _new_env['LC_ALL'] = 'C'
     try:
-        _stdout = subprocess.check_output(command, env=_new_env)
+        _stdout = subprocess.check_output(command, env=_new_env).decode('utf8')
     except subprocess.CalledProcessError:
         return None
     else:
@@ -99,7 +100,7 @@ def dict_to_list(dict_item: dict, delimiter: str = '=') -> list:
     return _output
 
 
-def dict_get_key_by_value(dict_item: dict, value) -> str or None:
+def dict_get_key_by_value(dict_item: dict, value) -> Optional[str]:
     """
     Find a key associated to a value if present, returns key or None otherwise.
 
@@ -113,7 +114,7 @@ def dict_get_key_by_value(dict_item: dict, value) -> str or None:
     return None
 
 
-def dict_get_value_by_key(dict_item: dict, key: str) -> bool or int or float or str or list or dict or None:
+def dict_get_value_by_key(dict_item: dict, key: str) -> Optional[Any[bool, int, float, str, list[Any], dict]]:
     """
     Find a value to a key if present, returns key or None otherwise.
 
@@ -400,7 +401,7 @@ def raw_to_file(filename: str, raw: str) -> bool:
         return True
 
 
-def file_to_raw(filename: str) -> bool or int or float or list or dict or None:
+def file_to_raw(filename: str) -> Optional[Any[bool, int, float, List[Any], dict]]:
     """
     Load a file and returns its raw content.
 
