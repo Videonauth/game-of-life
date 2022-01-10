@@ -79,6 +79,18 @@ class GUI:
         # create and name window
         self.window = pygame.display.set_mode(window_size)
         pygame.display.set_caption(caption)
+        # setup font
+        self.font = pygame.font.SysFont(None, 20, False, False)
+
+    def flush(self):
+        """Dolor ipsum lorem sit amet ..."""
+        # flush output
+        self.window.fill((0, 0, 0))
+        pygame.display.flip()
+
+
+class Draw:
+    pass
 
 
 def main():
@@ -93,24 +105,22 @@ def main():
     # define window size and initialize GUI
     window_size = width, height = 1280, 840
     gui = GUI("Conway's Game Of Life", window_size, 60)
+    gui.flush()
 
     # setup surface
     playfield_surface = pygame.Surface((height - 20, height - 20))
     menu_surface = pygame.Surface((width - height, height))
 
-    # setup font
-    font = pygame.font.SysFont(None, 20)
-
     # pre-draw menu surface
     pygame.draw.rect(menu_surface, colour.white, (10, 10, width - height - 20, height - 20), 1)
     pygame.draw.line(menu_surface, colour.white, (10, 40), (width - height - 10, 40), 1)
     pygame.draw.line(menu_surface, colour.white, (10, 45), (width - height - 10, 45), 1)
-    text = font.render('Clear', True, colour.white)
+    text = gui.font.render('Clear', True, colour.white)
     button_clear_abs_position = (height + 10, 45, width - 10, 65)
     menu_surface.blit(text, (20, 50))
     pygame.draw.line(menu_surface, colour.white, (10, 65), (width - height - 10, 65), 1)
     pygame.draw.line(menu_surface, colour.white, (10, 70), (width - height - 10, 70), 1)
-    text = font.render('Random Seed', True, colour.white)
+    text = gui.font.render('Random Seed', True, colour.white)
     button_random_abs_position = (height + 10, 70, width - 10, 90)
     menu_surface.blit(text, (20, 75))
     pygame.draw.line(menu_surface, colour.white, (10, 90), (width - height - 10, 90), 1)
@@ -120,11 +130,6 @@ def main():
     playfield_width = 20
     playfield_height = 20
     playfield = generate_playfield(playfield_height, playfield_width)
-
-    # flush output
-    gui.window.fill(colour.black)
-    playfield_surface.fill(colour.black)
-    pygame.display.flip()
 
     # setting up game loop
     _last_frame_time = 0
@@ -200,7 +205,7 @@ def main():
 
         # output fps
         if _last_frame_time != 0:
-            text = font.render(f'FPS: {1 / _last_frame_time}', True, colour.white)
+            text = gui.font.render(f'FPS: {1 / _last_frame_time}', True, colour.white)
             gui.window.blit(text, (height + 20, 20))
 
         # wait when to fast
