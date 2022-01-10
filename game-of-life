@@ -65,6 +65,14 @@ from modules.simulation import simulation
 colour = Colour()
 
 
+class GUI:
+    def __init__(self, _window_width: int, _window_height: int):
+        self._window_width = _window_width
+        self._window_height = _window_height
+
+        pass
+
+
 def main():
     """
     Initiate Conway's Game Of Life (GoL).
