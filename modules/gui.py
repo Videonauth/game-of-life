@@ -15,6 +15,7 @@
 from modules.colour import Colour
 import pygame
 
+# initialize colour class
 colours = Colour()
 
 

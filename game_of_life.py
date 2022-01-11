@@ -55,8 +55,8 @@ pygame documentation: https://www.pygame.org/docs/
 """
 import time
 
-from modules.colour import Colour
 from modules.gui import GUI
+from modules.gui import colours
 from modules.playfield import generate_playfield
 from modules.playfield import generate_seeded_playfield
 from modules.simulation import simulation
@@ -70,9 +70,6 @@ def main():
 
     Proxy to the game logic.
     """
-    # initialize colour class
-    colours = Colour()
-
     # define window size and initialize GUI class
     window_size = width, height = 1280, 840
     gui = GUI("Conway's Game Of Life", window_size, 60)
