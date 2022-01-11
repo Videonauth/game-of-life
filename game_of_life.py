@@ -56,70 +56,12 @@ pygame documentation: https://www.pygame.org/docs/
 import time
 
 from modules.colour import Colour
+from modules.gui import GUI
 from modules.playfield import generate_playfield
 from modules.playfield import generate_seeded_playfield
 from modules.simulation import simulation
 
 import pygame
-
-
-class GUI:
-    """Lorem ipsum dolor sit amet ..."""
-
-    def __init__(self, caption: str, window_size: tuple, fps: int):
-        """Ipsum dolor lorem sit amet ..."""
-        # storing window dimensions for internal use
-        self._window_size = window_size
-        self._window_width = window_size[0]
-        self._window_height = window_size[1]
-        # calculate frame limit storing outward facing
-        self.frame_limit = 1 / fps
-        # init pygame if not already initialized
-        if not pygame.get_init():
-            pygame.init()
-        # create and name window
-        self.window = pygame.display.set_mode(window_size)
-        pygame.display.set_caption(caption)
-        # setup font
-        self.font = pygame.font.SysFont(None, 20, False, False)
-
-    def flush(self):
-        """Dolor ipsum lorem sit amet ..."""
-        # flush output
-        self.window.fill((0, 0, 0))
-        pygame.display.flip()
-
-    def add_button(self,
-                   label: str,
-                   colour: tuple = (255, 255, 255),
-                   top_x: int = 0,
-                   top_y: int = 0,
-                   width: int = 420,
-                   height: int = 40,
-                   background_image: str = '',
-                   background_colour: tuple = (-1, -1, -1)
-                   ) -> tuple:
-        """implicate that there are docstrings outside ..."""
-        surface = pygame.Surface((width, height))
-        if not background_colour == (-1, -1, -1):
-            surface.fill(background_colour)
-        if not background_image == '':
-            # fixme: image should not be loaded in a function which might be called in the game loop
-            _image = pygame.image.load(background_image)
-            # todo: insert image bound check
-            surface.blit(_image, (0, 0))
-        # draw the button
-        pygame.draw.rect(surface, colour, (0, 0, width, height), 1)
-        pygame.draw.rect(surface, colour, (2, 2, width - 4, height - 4), 1)
-        text = self.font.render(label, True, colour)
-        text_boundary = text.get_rect()
-        surface.blit(text, (20, 50))
-        self.window.blit(surface, (top_x, top_y))
-        return top_x, top_y, top_x + width, top_y + height
-
-
-class Playfield:
-    pass
 
 
 def main():
@@ -131,29 +73,12 @@ def main():
     # initialize colour class
     colour = Colour()
 
-    # define window size and initialize GUI
+    # define window size and initialize GUI class
     window_size = width, height = 1280, 840
     gui = GUI("Conway's Game Of Life", window_size, 60)
-    gui.flush()
 
     # setup surface
     playfield_surface = pygame.Surface((height - 20, height - 20))
-    menu_surface = pygame.Surface((width - height, height))
-
-    # pre-draw menu surface
-    pygame.draw.rect(menu_surface, colour.white, (10, 10, width - height - 20, height - 20), 1)
-    pygame.draw.line(menu_surface, colour.white, (10, 40), (width - height - 10, 40), 1)
-    pygame.draw.line(menu_surface, colour.white, (10, 45), (width - height - 10, 45), 1)
-    text = gui.font.render('Clear', True, colour.white)
-    button_clear_abs_position = (height + 10, 45, width - 10, 65)
-    menu_surface.blit(text, (20, 50))
-    pygame.draw.line(menu_surface, colour.white, (10, 65), (width - height - 10, 65), 1)
-    pygame.draw.line(menu_surface, colour.white, (10, 70), (width - height - 10, 70), 1)
-    text = gui.font.render('Random Seed', True, colour.white)
-    button_random_abs_position = (height + 10, 70, width - 10, 90)
-    menu_surface.blit(text, (20, 75))
-    pygame.draw.line(menu_surface, colour.white, (10, 90), (width - height - 10, 90), 1)
-    pygame.draw.line(menu_surface, colour.white, (10, 95), (width - height - 10, 95), 1)
 
     # setup playfield to with and height given
     playfield_width = 20
@@ -186,7 +111,10 @@ def main():
                 _pressed = False
 
         # flush window and surface
-        gui.window.fill(colour.black)
+        gui.flush()
+        button_clear_abs_position = gui.add_button('Clear', colour.white, height + 10, 60)
+        button_random_abs_position = gui.add_button('Random', colour.white, height + 10, 110)
+
         playfield_surface.fill(colour.black)
 
         # set or unset single cells on mouseclick
@@ -230,12 +158,10 @@ def main():
             start_y += cell_size
 
         gui.window.blit(playfield_surface, (10, 10))
-        gui.window.blit(menu_surface, (height + 1, 0))
 
         # output fps
         if _last_frame_time != 0:
-            text = gui.font.render(f'FPS: {1 / _last_frame_time}', True, colour.white)
-            gui.window.blit(text, (height + 20, 20))
+            gui.add_button(f'FPS: {1 // _last_frame_time}', colour.white, height + 10, 10)
 
         # wait when to fast
         while time.time() - _t < gui.frame_limit:
