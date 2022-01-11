@@ -89,17 +89,29 @@ class GUI:
         self.window.fill((0, 0, 0))
         pygame.display.flip()
 
-
-class Draw:
-    """Help me I'm a docstring ..."""
-
-    def button(self, label: str, width: int, height: int, background_image: str = '') -> pygame.Surface:
+    def add_button(self,
+                   label: str,
+                   font: object,
+                   colour: tuple = (255, 255, 255),
+                   top_x: int = 0,
+                   top_y: int = 0,
+                   width: int = 420,
+                   height: int = 40,
+                   background_image: str = '',
+                   background_colour: tuple = (-1, -1, -1)
+                   ) -> pygame.Surface:
         """implicate that there are docstrings outside ..."""
-        _surface = pygame.Surface((width, height))
+        surface = pygame.Surface((width, height))
+        if not background_colour == (-1, -1, -1):
+            surface.fill(background_colour)
         if not background_image == '':
-            pass
-
-        return _surface
+            _image = pygame.image.load(background_image) # fixme: should not be in a function which might be called in the game loop
+            # todo: insert image bound check
+            surface.blit(_image, (0, 0))
+        # draw the button
+        pygame.draw.rect(surface, colour, (0, 0, width, height), 1)
+        pygame.draw.rect(surface, colour, (2, 2, width - 4, height - 4), 1)
+        self.window.blit(surface, (top_x, top_y))
 
 
 class Playfield:
