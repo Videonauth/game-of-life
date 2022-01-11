@@ -111,6 +111,9 @@ class GUI:
         # draw the button
         pygame.draw.rect(surface, colour, (0, 0, width, height), 1)
         pygame.draw.rect(surface, colour, (2, 2, width - 4, height - 4), 1)
+        text = self.font.render(label, True, colour)
+        text_boundary = text.get_rect()
+        surface.blit(text, (20, 50))
         self.window.blit(surface, (top_x, top_y))
         return top_x, top_y, top_x + width, top_y + height
 
