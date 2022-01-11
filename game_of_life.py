@@ -71,7 +71,7 @@ def main():
     Proxy to the game logic.
     """
     # initialize colour class
-    colour = Colour()
+    colours = Colour()
 
     # define window size and initialize GUI class
     window_size = width, height = 1280, 840
@@ -112,10 +112,10 @@ def main():
 
         # flush window and surface
         gui.flush()
-        button_clear_abs_position = gui.add_button('Clear', colour.white, height + 10, 60)
-        button_random_abs_position = gui.add_button('Random', colour.white, height + 10, 110)
+        button_clear_abs_position = gui.add_button('Clear', colours.white, height + 10, 60)
+        button_random_abs_position = gui.add_button('Random', colours.white, height + 10, 110)
 
-        playfield_surface.fill(colour.black)
+        playfield_surface.fill(colours.black)
 
         # set or unset single cells on mouseclick
         if _pressed and not _locked and button == 1:
@@ -147,10 +147,10 @@ def main():
         for line in playfield:
             for cell in line:
                 if cell == 0:
-                    pygame.draw.rect(playfield_surface, colour.white, (start_x, start_y, cell_size, cell_size), 1)
+                    pygame.draw.rect(playfield_surface, colours.white, (start_x, start_y, cell_size, cell_size), 1)
                 elif cell == 1:
-                    pygame.draw.rect(playfield_surface, colour.blue, (start_x, start_y, cell_size, cell_size))
-                    pygame.draw.rect(playfield_surface, colour.white, (start_x, start_y, cell_size, cell_size), 1)
+                    pygame.draw.rect(playfield_surface, colours.blue, (start_x, start_y, cell_size, cell_size))
+                    pygame.draw.rect(playfield_surface, colours.white, (start_x, start_y, cell_size, cell_size), 1)
                 else:
                     pass
                 start_x += cell_size
@@ -161,7 +161,7 @@ def main():
 
         # output fps
         if _last_frame_time != 0:
-            gui.add_button(f'FPS: {1 // _last_frame_time}', colour.white, height + 10, 10)
+            gui.add_button(f'FPS: {1 // _last_frame_time}', colours.white, height + 10, 10)
 
         # wait when to fast
         while time.time() - _t < gui.frame_limit:
