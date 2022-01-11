@@ -13,6 +13,7 @@
 """gui class."""
 
 from modules.colour import Colour
+
 import pygame
 
 # initialize colour class
@@ -42,7 +43,7 @@ class GUI:
         self.font = pygame.font.SysFont(None, 20, False, False)
 
     def flush(self):
-        """Fills the whole window output screen with a chosen colour."""
+        """Fill the whole window output screen with a chosen colour."""
         # flush output
         self.window.fill(self._flush_colour)
 
@@ -54,7 +55,7 @@ class GUI:
                    width: int = 420,
                    height: int = 40,
                    background_image: pygame.Surface = None,
-                   background_colour: Colour = None
+                   background_colour: Colour = None,
                    ) -> tuple:
         """Draw a button on the output screen and return the clickable border positions absolute."""
         surface = pygame.Surface((width, height))
@@ -71,7 +72,7 @@ class GUI:
         text = self.font.render(label, True, colour)
         _text_boundary = text.get_rect()
         surface.blit(text, ((width / 2) - (_text_boundary.width / 2), (height / 2) - (_text_boundary.height / 2)))
-        # draw and return tuple for clickable surface positions 
+        # draw and return tuple for clickable surface positions
         self.window.blit(surface, (top_x, top_y))
         return top_x, top_y, top_x + width, top_y + height
 
