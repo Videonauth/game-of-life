@@ -11,7 +11,6 @@
 # ---------------------------------------------------------------------------
 
 """gui class."""
-
 from modules.colour import Colour
 
 import pygame
