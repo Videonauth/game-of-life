@@ -74,8 +74,9 @@ class GUI:
         self._window_height = window_size[1]
         # calculate frame limit storing outward facing
         self.frame_limit = 1 / fps
-        # init pygame
-        pygame.init()
+        # init pygame if not already initialized
+        if not pygame.get_init():
+            pygame.init()
         # create and name window
         self.window = pygame.display.set_mode(window_size)
         pygame.display.set_caption(caption)
@@ -90,6 +91,18 @@ class GUI:
 
 
 class Draw:
+    """Help me I'm a docstring ..."""
+
+    def button(self, label: str, width: int, height: int, background_image: str = '') -> pygame.Surface:
+        """implicate that there are docstrings outside ..."""
+        _surface = pygame.Surface((width, height))
+        if not background_image == '':
+            pass
+
+        return _surface
+
+
+class Playfield:
     pass
 
 
