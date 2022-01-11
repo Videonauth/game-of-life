@@ -39,7 +39,7 @@ class GUI:
         # setup default flush colour
         self._flush_colour = colours.black
         # setup font
-        self.font = pygame.font.SysFont(None, 20, False, False)
+        self.font = pygame.font.SysFont('Arial', 20, False, False)
 
     def flush(self):
         """Fill the whole window output screen with a chosen colour."""
@@ -48,13 +48,13 @@ class GUI:
 
     def add_button(self,
                    label: str,
-                   colour: Colour = colours.black,
+                   colour: tuple[int, int, int] = colours.black,
                    top_x: int = 0,
                    top_y: int = 0,
                    width: int = 420,
                    height: int = 40,
                    background_image: pygame.Surface = None,
-                   background_colour: Colour = None,
+                   background_colour: tuple[int, int, int] = None,
                    ) -> tuple:
         """Draw a button on the output screen and return the clickable border positions absolute."""
         surface = pygame.Surface((width, height))
