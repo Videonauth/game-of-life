@@ -154,7 +154,7 @@ def main():
             start_x = 0
             start_y += cell_size
 
-        gui.window.blit(playfield_surface, (10, 10))
+        gui.add_surface(playfield_surface, (10, 10))
 
         # output fps
         if _last_frame_time != 0:
@@ -170,6 +170,7 @@ def main():
 
         # flip screen buffer
         pygame.display.flip()
+
 
 # s        # skip frames if needed
 # s        if last_frame_time > 1/fps_limit:
