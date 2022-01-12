@@ -6,8 +6,7 @@
 # Author: Videonauth <videonauth@googlemail.com>
 # License: MIT (see LICENSE file)
 # Date: 02.12.18 - 02:54
-# Purpose: -
-# Written for: Python 3.6.3
+# Written for: Python 3.9.5
 # ---------------------------------------------------------------------------
 
 """

@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
+# ---------------------------------------------------------------------------
+# game-of-life - playfield
+# ---------------------------------------------------------------------------
+# Author: Videonauth <videonauth@googlemail.com>
+# License: MIT (see LICENSE file)
+# Date: 11.01.22 - 22:55
+# Written for: Python 3.9.5
+# ---------------------------------------------------------------------------
 
 """Playfield factories and manipulation."""
 

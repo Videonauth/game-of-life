@@ -7,7 +7,7 @@
 # License: MIT (see LICENSE file)
 # Date: 10.01.22 - 01:09
 # Purpose: -
-# Written for: Python 3.6.3
+# Written for: Python 3.9.5
 # ---------------------------------------------------------------------------
 
 """Colour definition."""
