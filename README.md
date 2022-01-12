@@ -47,7 +47,6 @@ the preceding one. The rules continue to be applied repeatedly to create further
 [pygame documentation](https://www.pygame.org/docs/)
 
 ## Usage
-
 User Action | Result
 --- | ---
 left click on the grid | set / unset cell
