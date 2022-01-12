@@ -55,7 +55,7 @@ class GUI:
                    height: int = 40,
                    background_image: pygame.Surface = None,
                    background_colour: tuple[int, int, int] = None,
-                   ) -> tuple:
+                   ) -> tuple[int, int, int, int]:
         """Draw a button on the output screen and return the clickable border positions absolute."""
         surface = pygame.Surface((width, height))
         # fill if we got a colour we fill the button with it
