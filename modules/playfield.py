@@ -5,7 +5,7 @@
 
 from collections import namedtuple
 from random import sample
-from typing import List
+from typing import List, Tuple
 
 from modules.gui import colours
 from modules.simulation import simulation
@@ -80,8 +80,8 @@ class Playfield:
     """Playfield class contains everything done in regard of the playfield."""
 
     def __init__(self,
-                 playfield_size: tuple[int, int],
-                 surface_size: tuple[int, int],
+                 playfield_size: Tuple[int, int],
+                 surface_size: Tuple[int, int],
                  ):
         """Initialize the playfield class."""
         self.width = playfield_size[0]
