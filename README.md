@@ -48,9 +48,9 @@ the preceding one. The rules continue to be applied repeatedly to create further
 
 ## Usage
 
-left click on the grid <=> set / unset cell<br>
-left click on clear <=> clear the playfield<br>
-left click on random <=> fill the playfield with random seed
-
-right click anywhere <=> simulate one generation step
-
+User Action | Result
+--- | ---
+left click on the grid | set / unset cell
+left click on clear | clear the playfield
+left click on random | fill the playfield with random seed
+right click anywhere | simulate one generation step
