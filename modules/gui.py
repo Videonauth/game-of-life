@@ -10,7 +10,7 @@
 # Written for: Python 3.6.3
 # ---------------------------------------------------------------------------
 
-"""gui class."""
+"""GUI class."""
 from modules.colour import Colour
 
 import pygame
