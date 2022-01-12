@@ -39,6 +39,7 @@ discrete moment at which this happens is sometimes called a tick. Each generatio
 the preceding one. The rules continue to be applied repeatedly to create further generations.
 
 Goals:
+- not looking at other peoples code or solutions for it
 - have logging
 - have an initial set state, by user choice.
 - have a proper game loop with error checking and error states.
