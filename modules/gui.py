@@ -75,6 +75,10 @@ class GUI:
         self.window.blit(_surface, (top_x, top_y))
         return top_x, top_y, top_x + width, top_y + height
 
+    def add_surface(self, surface: pygame.Surface, pos_abs: tuple[int, int]):
+        """ draws a surface onto the internal window class"""
+        self.window.blit(surface, pos_abs)
+
 
 if __name__ == '__main__':
     pass
