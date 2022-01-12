@@ -6,8 +6,7 @@
 # Author: Videonauth <videonauth@googlemail.com>
 # License: MIT (see LICENSE file)
 # Date: 11.01.22 - 22:55
-# Purpose: -
-# Written for: Python 3.6.3
+# Written for: Python 3.9.5
 # ---------------------------------------------------------------------------
 
 """GUI class."""
