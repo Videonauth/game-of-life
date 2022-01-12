@@ -11,6 +11,8 @@
 # ---------------------------------------------------------------------------
 
 """GUI class."""
+from typing import Tuple
+
 from modules.colour import Colour
 
 import pygame
@@ -22,7 +24,7 @@ colours = Colour()
 class GUI:
     """GUI class contains everything belonging to output and the window."""
 
-    def __init__(self, caption: str, window_size: tuple, fps: int):
+    def __init__(self, caption: str, window_size: Tuple[int, int], fps: int):
         """Initialize the graphical user interface."""
         # storing window dimensions for internal use
         self._window_size = window_size
@@ -48,14 +50,14 @@ class GUI:
 
     def add_button(self,
                    label: str,
-                   colour: tuple[int, int, int] = colours.black,
+                   colour: Tuple[int, int, int] = colours.black,
                    top_x: int = 0,
                    top_y: int = 0,
                    width: int = 420,
                    height: int = 40,
                    background_image: pygame.Surface = None,
-                   background_colour: tuple[int, int, int] = None,
-                   ) -> tuple[int, int, int, int]:
+                   background_colour: Tuple[int, int, int] = None,
+                   ) -> Tuple[int, int, int, int]:
         """Draw a button on the output screen and return the clickable border positions absolute."""
         _surface = pygame.Surface((width, height))
         # fill if we got a colour we fill the button with it
@@ -75,7 +77,7 @@ class GUI:
         self.window.blit(_surface, (top_x, top_y))
         return top_x, top_y, top_x + width, top_y + height
 
-    def add_surface(self, surface: pygame.Surface, pos_abs: tuple[int, int]):
+    def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
         """Draw a surface onto the internal window class."""
         self.window.blit(surface, pos_abs)
 
