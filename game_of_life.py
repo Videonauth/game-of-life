@@ -57,9 +57,7 @@ import time
 
 from modules.gui import GUI
 from modules.gui import colours
-from modules.playfield import generate_playfield
-from modules.playfield import generate_seeded_playfield
-from modules.simulation import simulation
+from modules.playfield import Playfield
 
 import pygame
 
@@ -74,18 +72,13 @@ def main():
     window_size = width, height = 1280, 840
     gui = GUI("Conway's Game Of Life", window_size, 60)
 
-    # setup surface
-    playfield_surface = pygame.Surface((height - 20, height - 20))
-
     # setup playfield to with and height given
-    playfield_width = 20
-    playfield_height = 20
-    playfield = generate_playfield(playfield_height, playfield_width)
+    playfield_size = playfield_width, playfield_height = 20, 20
+    playfield = Playfield(playfield_size, window_size)
 
     # setting up game loop
     _last_frame_time = 0
     _running = True
-    cell_size = (height - 20) // max(playfield_width, playfield_height)
     mouse_x = 0
     mouse_y = 0
     button = 0
@@ -112,53 +105,37 @@ def main():
         button_clear_abs_position = gui.add_button('Clear', colours.white, height + 10, 60)
         button_random_abs_position = gui.add_button('Random', colours.white, height + 10, 110)
 
-        playfield_surface.fill(colours.black)
+        playfield.flush_surface()
 
         # set or unset single cells on mouseclick
         if _pressed and not _locked and button == 1:
             # set / unset
-            if mouse_x < (playfield_width * cell_size) and mouse_y < (playfield_height * cell_size):
-                cell_x = mouse_x // cell_size
-                cell_y = mouse_y // cell_size
-                playfield[cell_y][cell_x] = playfield[cell_y][cell_x] ^ 1
+            if mouse_x < (playfield_width * playfield.cell_size) and mouse_y < (playfield_height * playfield.cell_size):
+                cell_x = mouse_x // playfield.cell_size
+                cell_y = mouse_y // playfield.cell_size
+                playfield.flip_cell(cell_x, cell_y)
             # menu clear
             if button_clear_abs_position[2] > mouse_x > button_clear_abs_position[0]:
                 if button_clear_abs_position[3] > mouse_y > button_clear_abs_position[1]:
-                    playfield = generate_playfield(playfield_height, playfield_width)
+                    playfield.clear()
             # menu random
             if button_random_abs_position[2] > mouse_x > button_random_abs_position[0]:
                 if button_random_abs_position[3] > mouse_y > button_random_abs_position[1]:
-                    playfield = generate_seeded_playfield(playfield_height,
-                                                          playfield_width,
-                                                          int(playfield_height * playfield_width * 0.5))
+                    playfield.randomize()
             _locked = True
 
         # simulate (one mouseclick equals one generation change)
         if _pressed and not _locked and button == 3:
             _locked = True
-            playfield = simulation(playfield)
+            playfield.simulate()
 
         # drawing playfield
-        start_x = 0
-        start_y = 0
-        for line in playfield:
-            for cell in line:
-                if cell == 0:
-                    pygame.draw.rect(playfield_surface, colours.white, (start_x, start_y, cell_size, cell_size), 1)
-                elif cell == 1:
-                    pygame.draw.rect(playfield_surface, colours.blue, (start_x, start_y, cell_size, cell_size))
-                    pygame.draw.rect(playfield_surface, colours.white, (start_x, start_y, cell_size, cell_size), 1)
-                else:
-                    pass
-                start_x += cell_size
-            start_x = 0
-            start_y += cell_size
-
-        gui.add_surface(playfield_surface, (10, 10))
+        playfield.update_surface()
+        gui.add_surface(playfield.surface, (10, 10))
 
         # output fps
         if _last_frame_time != 0:
-            gui.add_button(f'FPS: {1 // _last_frame_time}', colours.white, height + 10, 10)
+            gui.add_button(f'FPS: {(1 // _last_frame_time ) + 1}', colours.white, height + 10, 10)
 
         # wait when to fast
         while time.time() - _t < gui.frame_limit:
