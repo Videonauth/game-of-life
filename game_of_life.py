@@ -38,18 +38,6 @@ simultaneously to every cell in the seed, live or dead; births and deaths occur 
 discrete moment at which this happens is sometimes called a tick. Each generation is a pure function of
 the preceding one. The rules continue to be applied repeatedly to create further generations.
 
-Goals:
-- not looking at other peoples code or solutions for it
-- have logging
-- have an initial set state, by user choice.
-- have a proper game loop with error checking and error states.
-- have an option for the game to be run for x amount of frames until it ends, or have it run until user interrupt.
-- have an FPS limiter.
-- have a resizable window.
-- have an option to choose the playing field size
-- have full screen swap option
-- have mouse and keyboard input
-
 Resources:
 python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
