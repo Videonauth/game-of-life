@@ -40,7 +40,7 @@ pull-remotes() {
         return 1
     fi
 
-    for branch in master developtment dwd Videonauth; do
+    for branch in master Development DWD Videonauth; do
         if ! git checkout "${branch}"; then
             echo_err "Failed to checkout branch ${branch}"
             return 1
