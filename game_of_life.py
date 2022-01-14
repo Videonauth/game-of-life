@@ -51,6 +51,11 @@ from modules.playfield import Playfield
 import pygame
 
 
+class EventHandler:
+    def __init__(self):
+        pass
+
+
 def main():
     """
     Initiate Conway's Game Of Life (GoL).
