@@ -3,8 +3,16 @@
 
 declare -r VenvDir='./.venv/bin'
 
+echo_info() {
+    printf '\x1b[32mInform:\x1b[0m  %s\n' "$*"
+}
+
+echo_warn() {
+    printf '\x1b[33mWarning:\x1b[0m %s\n' "$*"
+}
+
 echo_err() {
-    printf '\x1b[31mErr:\x1b[0m %s\n' "$*"
+    printf '\x1b[31mError:\x1b[0m   %s\n' "$*"
 }
 
 if [[ ! -d "${VenvDir}" ]]; then
@@ -28,6 +36,7 @@ install-dependencies() {
 
 pull-remotes() {
     local Branch
+    local -a Branches
     local branch
 
     if ! Branch="$(git rev-parse --abbrev-ref HEAD)"; then
@@ -35,26 +44,42 @@ pull-remotes() {
         return 1
     fi
 
-    if ! git pull --all; then
-        echo_err 'Failed to pull all remotes'
-        return 1
-    fi
+    # if ! git pull --all; then
+    #     echo_err 'Failed to pull all remotes'
+    #     # return 1
+    # fi
 
-    for branch in master Development DWD Videonauth; do
-        if ! git checkout "${branch}"; then
+    readarray -t Branches < <(git branch | sed -E 's/^[ *]+//' ) ; echo "${AD[@]}"
+    readonly Branches
+
+    for branch in "${Branches[@]}"; do
+        echo_info "Now on branch ${branch}"
+        if ! git checkout "${branch}" &>/dev/null; then
             echo_err "Failed to checkout branch ${branch}"
-            return 1
+            continue
         fi
 
-        if ! git pull; then
-            echo_err "Failed to pul on branch ${branch}"
-            return 1
+        if ! git rev-parse --abbrev-ref --symbolic-full-name @{u} &>/dev/null; then
+            echo_warn 'Could not fetch branch upstream'
+            continue
+        fi
+
+        if ! git fetch &>/dev/null; then
+            echo_err "Failed to fetch branch ${branch}"
+            continue
+        fi
+
+        if ! git merge "$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"; then
+            echo_err 'Failed to merge'
+            continue
         fi
     done
 
-    if ! git checkout "${Branch}"; then
-        echo_err "Failed to move back to branch ${Branch}"
-        return 1
+    if [[ "$(git branch | awk '/*/ { print $2 }')" !=  "${Branch}" ]]; then
+        if ! git checkout "${Branch}"; then
+            echo_err "Failed to move back to branch ${Branch}"
+            return 1
+        fi
     fi
 
     return 0
@@ -77,11 +102,12 @@ Usage:
     ${BASH_SOURCE[0]} Action [Options]
 
 Actions: 
-    help|--help|-h|h  Display this help text
-    intsall           Install the project dependencies
-    sync              Synchronise local branches with the remotes
-    test              Run project tests
-    tree              Show project contents
+    help|--help|-h|h            Display this help text
+    intsall                     Install the project dependencies
+    resync-tags-from-remote     Delete local tags and pull from the remote
+    sync                        Synchronise local branches with the remotes
+    test                        Run project tests
+    tree                        Show project contents
 EOF
     printf '%s\n' "${VAR}"
     return 0
@@ -103,6 +129,19 @@ main() {
 
         install)
             install-dependencies
+            exit
+            ;;
+
+        resync-tags-from-remote)
+            if ! (set -o pipefail ; git tag -l | xargs git tag -d; exit); then
+                echo_err 'Failed to kill the tags'
+                exit 1
+            fi
+
+            if ! git fetch --tags; then
+                echo_err 'Failed to retrieve remote tags'
+                exit 1
+            fi
             exit
             ;;
 
