@@ -77,13 +77,7 @@ class GUI:
         self.window.blit(_surface, (top_x, top_y))
 
         ReturnValue = namedtuple('ReturnValue', ['label', 'colour', 'top_x', 'top_y', 'bottom_x', 'bottom_y'])
-        ReturnValue.label = label
-        ReturnValue.colour = colour
-        ReturnValue.top_x = top_x
-        ReturnValue.top_y = top_y
-        ReturnValue.bottom_x = top_x + width
-        ReturnValue.bottom_y = top_y + height
-        return ReturnValue
+        return ReturnValue(label, colour, top_x, top_y, top_x + width, top_y + height)
 
     def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
         """Draw a surface onto the internal window class."""

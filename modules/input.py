@@ -80,10 +80,4 @@ class InputHandler:
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
         ReturnValue = namedtuple('ReturnValue', ['x', 'y', 'event_x', 'event_y', 'event_button', 'event_key'])
-        ReturnValue.x = mouse_x
-        ReturnValue.y = mouse_y
-        ReturnValue.event_x = event_x
-        ReturnValue.event_y = event_y
-        ReturnValue.event_button = event_button
-        ReturnValue.event_key = event_key
-        return ReturnValue
+        return ReturnValue(mouse_x, mouse_y, event_x, event_y, event_button, event_key)
