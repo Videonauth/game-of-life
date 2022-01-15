@@ -59,7 +59,7 @@ def main():
     Proxy to the game logic.
     """
     # define window size and initialize GUI class
-    window_size = width, height = 1280, 840
+    window_size = window_width, window_height = 1280, 840
     gui = GUI("Conway's Game Of Life", window_size, 60)
 
     # setup playfield to with and height given
@@ -78,8 +78,8 @@ def main():
 
         # flush window and surface
         gui.flush()
-        button_clear = gui.add_button('Clear', colours.white, height + 10, 60)
-        button_random = gui.add_button('Random', colours.white, height + 10, 110)
+        button_clear = gui.add_button('Clear', colours.white, window_height + 10, 60)
+        button_random = gui.add_button('Random', colours.white, window_height + 10, 110)
 
         playfield.flush_surface()
 
@@ -112,7 +112,7 @@ def main():
 
         # output fps
         if _last_frame_time != 0:
-            gui.add_button(f'FPS: {(1 // _last_frame_time ) + 1}', colours.white, height + 10, 10)
+            gui.add_button(f'FPS: {(1 // _last_frame_time ) + 1}', colours.white, window_height + 10, 10)
 
         # wait when to fast
         while time.time() - _t < gui.frame_limit:
