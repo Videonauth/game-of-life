@@ -76,7 +76,9 @@ class GUI:
         # draw and return tuple for clickable surface positions
         self.window.blit(_surface, (top_x, top_y))
 
-        ReturnValue = namedtuple('ReturnValue', ['top_x', 'top_y', 'bottom_x', 'bottom_y'])
+        ReturnValue = namedtuple('ReturnValue', ['label', 'colour', 'top_x', 'top_y', 'bottom_x', 'bottom_y'])
+        ReturnValue.label = label
+        ReturnValue.colour = colour
         ReturnValue.top_x = top_x
         ReturnValue.top_y = top_y
         ReturnValue.bottom_x = top_x + width
