@@ -46,14 +46,10 @@ import time
 
 from modules.gui import GUI
 from modules.gui import colours
+from modules.input import InputHandler
 from modules.playfield import Playfield
 
 import pygame
-
-
-class EventHandler:
-    def __init__(self):
-        pass
 
 
 def main():
@@ -70,29 +66,14 @@ def main():
     playfield_size = playfield_width, playfield_height = 20, 20
     playfield = Playfield(playfield_size, window_size)
 
+    # initialize handler fo the input
+    handler = InputHandler()
+
     # setting up game loop
     _last_frame_time = 0
-    _running = True
-    mouse_x = 0
-    mouse_y = 0
-    button = 0
-    _locked = False
-    _pressed = False
-    while _running:
+    while handler.running():
         _t = time.time()
-
-        # event handling for input
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                _running = False
-                continue
-            if event.type == pygame.MOUSEBUTTONDOWN and not _pressed:
-                mouse_x, mouse_y = event.pos
-                button = event.button
-                _pressed = True
-            elif event.type == pygame.MOUSEBUTTONUP:
-                _locked = False
-                _pressed = False
+        result = handler.poll()
 
         # flush window and surface
         gui.flush()
@@ -102,25 +83,26 @@ def main():
         playfield.flush_surface()
 
         # set or unset single cells on mouseclick
-        if _pressed and not _locked and button == 1:
+        if handler.button_pressed() and not handler.locked() and result[4] == 1:
+            handler.lock()
             # set / unset
-            if mouse_x < (playfield_width * playfield.cell_size) and mouse_y < (playfield_height * playfield.cell_size):
-                cell_x = mouse_x // playfield.cell_size
-                cell_y = mouse_y // playfield.cell_size
+            if result[2] < (playfield_width * playfield.cell_size) and\
+                    result[3] < (playfield_height * playfield.cell_size):
+                cell_x = result[2] // playfield.cell_size
+                cell_y = result[3] // playfield.cell_size
                 playfield.flip_cell(cell_x, cell_y)
             # menu clear
-            if button_clear_abs_position[2] > mouse_x > button_clear_abs_position[0]:
-                if button_clear_abs_position[3] > mouse_y > button_clear_abs_position[1]:
+            if button_clear_abs_position[2] > result[2] > button_clear_abs_position[0]:
+                if button_clear_abs_position[3] > result[3] > button_clear_abs_position[1]:
                     playfield.clear()
             # menu random
-            if button_random_abs_position[2] > mouse_x > button_random_abs_position[0]:
-                if button_random_abs_position[3] > mouse_y > button_random_abs_position[1]:
+            if button_random_abs_position[2] > result[2] > button_random_abs_position[0]:
+                if button_random_abs_position[3] > result[3] > button_random_abs_position[1]:
                     playfield.randomize()
-            _locked = True
 
         # simulate (one mouseclick equals one generation change)
-        if _pressed and not _locked and button == 3:
-            _locked = True
+        if handler.button_pressed() and not handler.locked() and result[4] == 3:
+            handler.lock()
             playfield.simulate()
 
         # drawing playfield
