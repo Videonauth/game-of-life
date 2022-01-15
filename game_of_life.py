@@ -78,15 +78,16 @@ def main():
 
         # flush window and surface
         gui.flush()
+        playfield.flush_surface()
+
+        # define UI buttons
         button_clear = gui.add_button('Clear', colours.white, window_height + 10, 60)
         button_random = gui.add_button('Random', colours.white, window_height + 10, 110)
 
-        playfield.flush_surface()
-
-        # set or unset single cells on mouseclick and handle button calls
+        # handle left button click
         if handler.button_pressed() and not handler.locked() and result.event_button == 1:
             handler.lock()
-            # set / unset
+            # set / unset single cells
             if 0 < result.event_x < (playfield_width * playfield.cell_size) and\
                     0 < result.event_y < (playfield_height * playfield.cell_size):
                 cell_x = result.event_x // playfield.cell_size
@@ -101,7 +102,7 @@ def main():
                     button_random.bottom_y > result.event_y > button_random.top_y:
                 playfield.randomize()
 
-        # simulate (one mouseclick equals one generation change)
+        # handle right button click, i.e. simulate (one mouseclick equals one generation change)
         if handler.button_pressed() and not handler.locked() and result.event_button == 3:
             handler.lock()
             playfield.simulate()
