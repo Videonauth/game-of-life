@@ -78,31 +78,31 @@ def main():
 
         # flush window and surface
         gui.flush()
-        button_clear_abs_position = gui.add_button('Clear', colours.white, height + 10, 60)
-        button_random_abs_position = gui.add_button('Random', colours.white, height + 10, 110)
+        button_clear = gui.add_button('Clear', colours.white, height + 10, 60)
+        button_random = gui.add_button('Random', colours.white, height + 10, 110)
 
         playfield.flush_surface()
 
-        # set or unset single cells on mouseclick
-        if handler.button_pressed() and not handler.locked() and result[4] == 1:
+        # set or unset single cells on mouseclick and handle button calls
+        if handler.button_pressed() and not handler.locked() and result.event_button == 1:
             handler.lock()
             # set / unset
-            if result[2] < (playfield_width * playfield.cell_size) and\
-                    result[3] < (playfield_height * playfield.cell_size):
-                cell_x = result[2] // playfield.cell_size
-                cell_y = result[3] // playfield.cell_size
+            if 0 < result.event_x < (playfield_width * playfield.cell_size) and\
+                    0 < result.event_y < (playfield_height * playfield.cell_size):
+                cell_x = result.event_x // playfield.cell_size
+                cell_y = result.event_y // playfield.cell_size
                 playfield.flip_cell(cell_x, cell_y)
             # menu clear
-            if button_clear_abs_position[2] > result[2] > button_clear_abs_position[0]:
-                if button_clear_abs_position[3] > result[3] > button_clear_abs_position[1]:
-                    playfield.clear()
+            if button_clear.bottom_x > result.event_x > button_clear.top_x and\
+                    button_clear.bottom_y > result.event_y > button_clear.top_y:
+                playfield.clear()
             # menu random
-            if button_random_abs_position[2] > result[2] > button_random_abs_position[0]:
-                if button_random_abs_position[3] > result[3] > button_random_abs_position[1]:
-                    playfield.randomize()
+            if button_random.bottom_x > result.event_x > button_random.top_x and\
+                    button_random.bottom_y > result.event_y > button_random.top_y:
+                playfield.randomize()
 
         # simulate (one mouseclick equals one generation change)
-        if handler.button_pressed() and not handler.locked() and result[4] == 3:
+        if handler.button_pressed() and not handler.locked() and result.event_button == 3:
             handler.lock()
             playfield.simulate()
 
