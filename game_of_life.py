@@ -72,6 +72,7 @@ def main():
     # setting up game loop
     _last_frame_time = 0
     while handler.running():
+        # take loop start time and poll for input
         _t = time.time()
         result = handler.poll()
 
