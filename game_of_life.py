@@ -146,6 +146,9 @@ def main():
             playfield.update_surface()
             gui.add_surface(playfield.surface, (10, 10))
 
+            gui.add_button(f'Playfield: x: {playfield.width} y: {playfield.height}',
+                           colours.white,
+                           window_height + 80, 160, 280, 90)
             # output fps
             gui.add_button(f'FPS: {(1 // timer.last_frame_time() )}', colours.white, window_height + 10, 10)
 
