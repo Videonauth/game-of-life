@@ -70,17 +70,29 @@ def main():
     handler = InputHandler()
 
     # define UI buttons
-    button_list = [gui.add_button('Clear', colours.white, window_height + 10, 60,
+    button_list = [gui.add_button('Clear',
+                                  colours.white,
+                                  window_height + 10, 60,
                                   hover_colour=colours.medium_grey),
-                   gui.add_button('Random', colours.white, window_height + 10, 110,
+                   gui.add_button('Random',
+                                  colours.white,
+                                  window_height + 10, 110,
                                   hover_colour=colours.medium_grey),
-                   gui.add_button('x +', colours.white, window_height + 10, 160, 60,
+                   gui.add_button('x +',
+                                  colours.white,
+                                  window_height + 10, 160, 60,
                                   hover_colour=colours.medium_grey),
-                   gui.add_button('x -', colours.white, window_width - 70, 160, 60,
+                   gui.add_button('x -',
+                                  colours.white,
+                                  window_width - 70, 160, 60,
                                   hover_colour=colours.medium_grey),
-                   gui.add_button('y +', colours.white, window_height + 10, 210, 60,
+                   gui.add_button('y +',
+                                  colours.white,
+                                  window_height + 10, 210, 60,
                                   hover_colour=colours.medium_grey),
-                   gui.add_button('y -', colours.white, window_width - 70, 210, 60,
+                   gui.add_button('y -',
+                                  colours.white,
+                                  window_width - 70, 210, 60,
                                   hover_colour=colours.medium_grey)]
 
     # setting up game loop
@@ -150,7 +162,9 @@ def main():
                            colours.white,
                            window_height + 80, 160, 280, 90)
             # output fps
-            gui.add_button(f'FPS: {(1 // timer.last_frame_time() )}', colours.white, window_height + 10, 10)
+            gui.add_button(f'FPS: {(1 // timer.last_frame_time() )}',
+                           colours.white,
+                           window_height + 10, 10)
 
             # flip screen buffer
             pygame.display.flip()
