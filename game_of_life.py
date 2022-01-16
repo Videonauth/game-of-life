@@ -69,21 +69,14 @@ def main():
     timer = Timer()
     handler = InputHandler()
 
+    # define UI buttons
+    button_clear = gui.add_button('Clear', colours.white, window_height + 10, 60)
+    button_random = gui.add_button('Random', colours.white, window_height + 10, 110)
+
     # setting up game loop
-    _skip = False
     while handler.running():
-        # take loop start time and poll for input
-        _skip = timer.poll(gui.frame_limit)
+        # poll for input
         result = handler.poll()
-
-        if not _skip:
-            # flush window and surface
-            gui.flush()
-            playfield.flush_surface()
-
-        # define UI buttons
-        button_clear = gui.add_button('Clear', colours.white, window_height + 10, 60)
-        button_random = gui.add_button('Random', colours.white, window_height + 10, 110)
 
         # handle left button click
         if handler.button_pressed() and not handler.locked() and result.event_button == 1:
@@ -108,7 +101,13 @@ def main():
             handler.lock()
             playfield.simulate()
 
-        if not _skip:
+        if not timer.poll(gui.frame_limit):
+            # flush window and surface
+            gui.flush()
+            playfield.flush_surface()
+            gui.add_surface(button_clear.surface, (button_clear.top_x, button_clear.top_y))
+            gui.add_surface(button_random.surface, (button_random.top_x, button_random.top_y))
+
             # drawing playfield
             playfield.update_surface()
             gui.add_surface(playfield.surface, (10, 10))
