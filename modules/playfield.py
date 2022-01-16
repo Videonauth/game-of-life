@@ -124,7 +124,7 @@ class Playfield:
         self.field = generate_seeded_playfield(self.height, self.width, int(self.height * self.width * multiplier))
 
     def resize(self, new_x: int, new_y: int):
-        """Resize the playfield"""
+        """Resize the playfield."""
         if not new_x < 3 and new_x <= 100 and not new_y < 3 and new_y <= 100:
             self.width = new_x
             self.height = new_y
