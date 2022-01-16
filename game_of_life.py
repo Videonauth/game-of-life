@@ -70,9 +70,18 @@ def main():
     handler = InputHandler()
 
     # define UI buttons
-    button_list = list()
-    button_list.append(gui.add_button('Clear', colours.white, window_height + 10, 60))
-    button_list.append(gui.add_button('Random', colours.white, window_height + 10, 110))
+    button_list = [gui.add_button('Clear', colours.white, window_height + 10, 60,
+                                  hover_colour=colours.medium_grey),
+                   gui.add_button('Random', colours.white, window_height + 10, 110,
+                                  hover_colour=colours.medium_grey),
+                   gui.add_button('x +', colours.white, window_height + 10, 160, 60,
+                                  hover_colour=colours.medium_grey),
+                   gui.add_button('x -', colours.white, window_width - 70, 160, 60,
+                                  hover_colour=colours.medium_grey),
+                   gui.add_button('y +', colours.white, window_height + 10, 210, 60,
+                                  hover_colour=colours.medium_grey),
+                   gui.add_button('y -', colours.white, window_width - 70, 210, 60,
+                                  hover_colour=colours.medium_grey)]
 
     # setting up game loop
     while handler.running():
@@ -98,6 +107,22 @@ def main():
                     # menu random
                     if button.label == 'Random':
                         playfield.randomize()
+                    # x +
+                    if button.label == 'x +':
+                        _current = playfield.get_size()
+                        playfield.resize(_current.width + 1, _current.height)
+                    # x -
+                    if button.label == 'x -':
+                        _current = playfield.get_size()
+                        playfield.resize(_current.width - 1, _current.height)
+                    # y +
+                    if button.label == 'y +':
+                        _current = playfield.get_size()
+                        playfield.resize(_current.width, _current.height + 1)
+                    # y -
+                    if button.label == 'y -':
+                        _current = playfield.get_size()
+                        playfield.resize(_current.width, _current.height - 1)
 
         # handle right button clicks, i.e. simulate (one mouseclick equals one generation change)
         if handler.button_pressed() and not handler.locked() and result.event_button == 3:
@@ -111,7 +136,11 @@ def main():
 
             # draw buttons
             for button in button_list:
-                gui.add_surface(button.surface, (button.top_x, button.top_y))
+                if button.bottom_x > result.x > button.top_x and\
+                        button.bottom_y > result.y > button.top_y:
+                    gui.add_surface(button.hover_surface, (button.top_x, button.top_y))
+                else:
+                    gui.add_surface(button.surface, (button.top_x, button.top_y))
 
             # drawing playfield
             playfield.update_surface()
