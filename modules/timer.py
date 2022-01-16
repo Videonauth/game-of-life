@@ -29,8 +29,7 @@ class Timer:
         if self._current_time - self._last_time <= frame_limit:
             _wait = frame_limit - (self._current_time - self._last_time)
             self._last_frame_time = (self._current_time - self._last_time) + _wait
-            while time.time() <= self._current_time + _wait:
-                pass
+            time.sleep(_wait)
             self._last_time = time.time()
             return False
         elif self._current_time - self._last_time > frame_limit:
