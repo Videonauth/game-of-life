@@ -79,5 +79,5 @@ class InputHandler:
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        ReturnValue = namedtuple('ReturnValue', ['x', 'y', 'event_x', 'event_y', 'event_button', 'event_key'])
-        return ReturnValue(mouse_x, mouse_y, event_x, event_y, event_button, event_key)
+        HandlerPoll = namedtuple('HandlerPoll', ['x', 'y', 'event_x', 'event_y', 'event_button', 'event_key'])
+        return HandlerPoll(mouse_x, mouse_y, event_x, event_y, event_button, event_key)
