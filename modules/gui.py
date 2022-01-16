@@ -76,7 +76,14 @@ class GUI:
         # draw and return tuple for clickable surface positions
         self.window.blit(_surface, (top_x, top_y))
 
-        ReturnValue = namedtuple('ReturnValue', ['label', 'colour', 'top_x', 'top_y', 'bottom_x', 'bottom_y', 'surface'])
+        ReturnValue = namedtuple('ReturnValue', ['label',
+                                                 'colour',
+                                                 'top_x',
+                                                 'top_y',
+                                                 'bottom_x',
+                                                 'bottom_y',
+                                                 'surface',
+                                                 ])
         return ReturnValue(label, colour, top_x, top_y, top_x + width, top_y + height, _surface)
 
     def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
