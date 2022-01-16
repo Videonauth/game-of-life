@@ -92,8 +92,8 @@ def main():
         if handler.button_pressed() and not handler.locked() and result.event_button == 1:
             handler.lock()
             # set / unset single cells
-            if 0 < result.event_x < (playfield_width * playfield.cell_size) and\
-                    0 < result.event_y < (playfield_height * playfield.cell_size):
+            if 0 < result.event_x < (playfield.width * playfield.cell_size) and\
+                    0 < result.event_y < (playfield.height * playfield.cell_size):
                 cell_x = result.event_x // playfield.cell_size
                 cell_y = result.event_y // playfield.cell_size
                 playfield.flip_cell(cell_x, cell_y)
