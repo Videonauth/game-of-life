@@ -130,7 +130,7 @@ class Playfield:
             self.height = new_y
             _surface_rect = self.surface.get_rect()
             self.cell_size = (min(_surface_rect.width, _surface_rect.height) - 20) // max(self.width, self.height)
-            self.field = generate_playfield(new_x, new_y)
+            self.field = generate_playfield(new_y, new_x)
 
     def simulate(self):
         """Simulate one generation step on the playfield."""
