@@ -80,19 +80,19 @@ def main():
                                   hover_colour=colours.medium_grey),
                    gui.add_button('x +',
                                   colours.white,
-                                  window_height + 10, 160, 60,
+                                  window_height + 10, 210, 60,
                                   hover_colour=colours.medium_grey),
                    gui.add_button('x -',
                                   colours.white,
-                                  window_width - 70, 160, 60,
+                                  window_width - 70, 210, 60,
                                   hover_colour=colours.medium_grey),
                    gui.add_button('y +',
                                   colours.white,
-                                  window_height + 10, 210, 60,
+                                  window_height + 10, 260, 60,
                                   hover_colour=colours.medium_grey),
                    gui.add_button('y -',
                                   colours.white,
-                                  window_width - 70, 210, 60,
+                                  window_width - 70, 260, 60,
                                   hover_colour=colours.medium_grey)]
 
     # setting up game loop
@@ -160,7 +160,7 @@ def main():
 
             gui.add_button(f'Playfield: x: {playfield.width} y: {playfield.height}',
                            colours.white,
-                           window_height + 80, 160, 280, 90)
+                           window_height + 80, 210, 280, 90)
             # output fps
             gui.add_button(f'FPS: {(1 // timer.last_frame_time() )}',
                            colours.white,
