@@ -42,12 +42,11 @@ Resources:
 python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
-import time
-
 from modules.gui import GUI
 from modules.gui import colours
 from modules.input import InputHandler
 from modules.playfield import Playfield
+from modules.timer import Timer
 
 import pygame
 
@@ -66,19 +65,21 @@ def main():
     playfield_size = playfield_width, playfield_height = 20, 20
     playfield = Playfield(playfield_size, window_size)
 
-    # initialize handler fo the input
+    # initialize the handler for input and the timer
+    timer = Timer()
     handler = InputHandler()
 
     # setting up game loop
-    _last_frame_time = 0
+    _skip = False
     while handler.running():
         # take loop start time and poll for input
-        _t = time.time()
+        _skip = timer.poll(gui.frame_limit)
         result = handler.poll()
 
-        # flush window and surface
-        gui.flush()
-        playfield.flush_surface()
+        if not _skip:
+            # flush window and surface
+            gui.flush()
+            playfield.flush_surface()
 
         # define UI buttons
         button_clear = gui.add_button('Clear', colours.white, window_height + 10, 60)
@@ -107,30 +108,16 @@ def main():
             handler.lock()
             playfield.simulate()
 
-        # drawing playfield
-        playfield.update_surface()
-        gui.add_surface(playfield.surface, (10, 10))
+        if not _skip:
+            # drawing playfield
+            playfield.update_surface()
+            gui.add_surface(playfield.surface, (10, 10))
 
-        # output fps
-        if _last_frame_time != 0:
-            gui.add_button(f'FPS: {(1 // _last_frame_time ) + 1}', colours.white, window_height + 10, 10)
+            # output fps
+            gui.add_button(f'FPS: {(1 // timer.last_frame_time() )}', colours.white, window_height + 10, 10)
 
-        # wait when to fast
-        while time.time() - _t < gui.frame_limit:
-            pass
-
-        # calculate frame time
-        _t_stop = time.time()
-        _last_frame_time = _t_stop - _t
-
-        # flip screen buffer
-        pygame.display.flip()
-
-
-# s        # skip frames if needed
-# s        if last_frame_time > 1/fps_limit:
-# s            last_frame_time = time.time() - _frame_start_t
-# s            continue
+            # flip screen buffer
+            pygame.display.flip()
 
 
 if __name__ == '__main__':
