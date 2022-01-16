@@ -70,15 +70,20 @@ def main():
     handler = InputHandler()
 
     # define UI buttons
-    button_clear = gui.add_button('Clear', colours.white, window_height + 10, 60)
-    button_random = gui.add_button('Random', colours.white, window_height + 10, 110)
+    button_list = list()
+    button_list.append(gui.add_button('Clear', colours.white, window_height + 10, 60))
+    button_list.append(gui.add_button('Random', colours.white, window_height + 10, 110))
+
+    for button in button_list:
+        print(button)
+        print()
 
     # setting up game loop
     while handler.running():
         # poll for input
         result = handler.poll()
 
-        # handle left button click
+        # handle left button clicks
         if handler.button_pressed() and not handler.locked() and result.event_button == 1:
             handler.lock()
             # set / unset single cells
@@ -87,16 +92,18 @@ def main():
                 cell_x = result.event_x // playfield.cell_size
                 cell_y = result.event_y // playfield.cell_size
                 playfield.flip_cell(cell_x, cell_y)
-            # menu clear
-            if button_clear.bottom_x > result.event_x > button_clear.top_x and\
-                    button_clear.bottom_y > result.event_y > button_clear.top_y:
-                playfield.clear()
-            # menu random
-            if button_random.bottom_x > result.event_x > button_random.top_x and\
-                    button_random.bottom_y > result.event_y > button_random.top_y:
-                playfield.randomize()
+            # process all buttons for input actions
+            for button in button_list:
+                if button.bottom_x > result.event_x > button.top_x and\
+                        button.bottom_y > result.event_y > button.top_y:
+                    # menu clear
+                    if button.label == 'Clear':
+                        playfield.clear()
+                    # menu random
+                    if button.label == 'Random':
+                        playfield.randomize()
 
-        # handle right button click, i.e. simulate (one mouseclick equals one generation change)
+        # handle right button clicks, i.e. simulate (one mouseclick equals one generation change)
         if handler.button_pressed() and not handler.locked() and result.event_button == 3:
             handler.lock()
             playfield.simulate()
@@ -105,8 +112,10 @@ def main():
             # flush window and surface
             gui.flush()
             playfield.flush_surface()
-            gui.add_surface(button_clear.surface, (button_clear.top_x, button_clear.top_y))
-            gui.add_surface(button_random.surface, (button_random.top_x, button_random.top_y))
+
+            # draw buttons
+            for button in button_list:
+                gui.add_surface(button.surface, (button.top_x, button.top_y))
 
             # drawing playfield
             playfield.update_surface()
