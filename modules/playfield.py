@@ -114,9 +114,23 @@ class Playfield:
         """Clear the playfield, i.e. setting each cell to zero."""
         self.field = generate_playfield(self.height, self.width)
 
+    def get_size(self):
+        """Return the current field size."""
+        FieldSize = namedtuple('FieldSize', ['width', 'height'])
+        return FieldSize(self.width, self.height)
+
     def randomize(self, multiplier: float = 0.5):
         """Fill the playfield with randomized cells."""
         self.field = generate_seeded_playfield(self.height, self.width, int(self.height * self.width * multiplier))
+
+    def resize(self, new_x: int, new_y: int):
+        """Resize the playfield"""
+        if not new_x < 3 and new_x <= 100 and not new_y < 3 and new_y <= 100:
+            self.width = new_x
+            self.height = new_y
+            _surface_rect = self.surface.get_rect()
+            self.cell_size = (min(_surface_rect.width, _surface_rect.height) - 20) // max(self.width, self.height)
+            self.field = generate_playfield(new_x, new_y)
 
     def simulate(self):
         """Simulate one generation step on the playfield."""
