@@ -74,10 +74,6 @@ def main():
     button_list.append(gui.add_button('Clear', colours.white, window_height + 10, 60))
     button_list.append(gui.add_button('Random', colours.white, window_height + 10, 110))
 
-    for button in button_list:
-        print(button)
-        print()
-
     # setting up game loop
     while handler.running():
         # poll for input
