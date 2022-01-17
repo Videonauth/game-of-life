@@ -75,7 +75,7 @@ pull-remotes() {
         fi
     done
 
-    if [[ "$(git branch | awk '/*/ { print $2 }')" !=  "${Branch}" ]]; then
+    if [[ "$(git branch | grep '\*' | awk '{ print $2 }')" !=  "${Branch}" ]]; then
         if ! git checkout "${Branch}"; then
             echo_err "Failed to move back to branch ${Branch}"
             return 1
