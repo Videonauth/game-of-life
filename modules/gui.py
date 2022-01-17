@@ -22,10 +22,10 @@ colours = Colour()
 
 Button = namedtuple('Button', ['label',
                                'colour',
-                               'top_x',
-                               'top_y',
-                               'bottom_x',
-                               'bottom_y',
+                               'left',
+                               'top',
+                               'right',
+                               'bottom',
                                'surface',
                                'hover_surface',
                                ])

@@ -114,8 +114,8 @@ def main():
             # process all buttons for input actions
             _current = playfield.get_size()
             for button in button_list:
-                if point_is_within_bounds(button.top_x, button.bottom_x,
-                                          button.top_y, button.bottom_y,
+                if point_is_within_bounds(button.left, button.right,
+                                          button.top, button.bottom,
                                           result.event_x, result.event_y):
                     if button.label == 'Clear':
                         playfield.clear()
@@ -148,12 +148,12 @@ def main():
             # draw buttons
             for button in button_list:
 
-                if point_is_within_bounds(button.top_x, button.bottom_x,
-                                          button.top_y, button.bottom_y,
+                if point_is_within_bounds(button.left, button.right,
+                                          button.top, button.bottom,
                                           result.x, result.y):
-                    gui.add_surface(button.hover_surface, (button.top_x, button.top_y))
+                    gui.add_surface(button.hover_surface, (button.left, button.top))
                 else:
-                    gui.add_surface(button.surface, (button.top_x, button.top_y))
+                    gui.add_surface(button.surface, (button.left, button.top))
 
             # drawing playfield
             playfield.update_surface()
