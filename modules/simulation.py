@@ -53,7 +53,3 @@ def simulation(playfield: list) -> list:
             _new_line.append(cell_out)
         new_playfield.append(_new_line)
     return new_playfield
-
-
-if __name__ == '__main__':
-    pass

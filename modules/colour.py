@@ -24,7 +24,3 @@ class Colour:
     dark_grey = (50, 50, 50)
     medium_grey = (100, 100, 100)
     light_grey = (175, 175, 175)
-
-
-if __name__ == '__main__':
-    pass

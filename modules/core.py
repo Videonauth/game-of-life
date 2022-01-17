@@ -446,7 +446,3 @@ def dir_create(path: str) -> bool:
         exit(1)
     else:
         return True
-
-
-if __name__ == '__main__':
-    pass
