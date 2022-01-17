@@ -59,8 +59,8 @@ def serialize_playfield(_playfield: List[List[int]]) -> str:
 
 
 def generate_seeded_playfield(
-    _playfield_height: int,
     _playfield_width: int,
+    _playfield_height: int,
     _number_of_seeded_cells: int,
 ) -> List[List[int]]:
     """Create a seeded playfield."""
@@ -123,7 +123,7 @@ class Playfield:
 
     def randomize(self, multiplier: float = 0.5):
         """Fill the playfield with randomized cells."""
-        self.field = generate_seeded_playfield(self.height, self.width, int(self.height * self.width * multiplier))
+        self.field = generate_seeded_playfield(self.width, self.height, int(self.height * self.width * multiplier))
 
     def resize(self, new_x: int, new_y: int):
         """Resize the playfield."""
