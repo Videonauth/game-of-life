@@ -110,6 +110,7 @@ def main():
                 cell_y = result.event_y // playfield.cell_size
                 playfield.flip_cell(cell_x, cell_y)
             # process all buttons for input actions
+            _current = playfield.get_size()
             for button in button_list:
                 if button.bottom_x > result.event_x > button.top_x and\
                         button.bottom_y > result.event_y > button.top_y:
@@ -121,19 +122,15 @@ def main():
                         playfield.randomize()
                     # x +
                     if button.label == 'x +':
-                        _current = playfield.get_size()
                         playfield.resize(_current.width + 1, _current.height)
                     # x -
                     if button.label == 'x -':
-                        _current = playfield.get_size()
                         playfield.resize(_current.width - 1, _current.height)
                     # y +
                     if button.label == 'y +':
-                        _current = playfield.get_size()
                         playfield.resize(_current.width, _current.height + 1)
                     # y -
                     if button.label == 'y -':
-                        _current = playfield.get_size()
                         playfield.resize(_current.width, _current.height - 1)
 
         # handle right button clicks, i.e. simulate (one mouseclick equals one generation change)
