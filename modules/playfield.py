@@ -21,6 +21,9 @@ from modules.simulation import simulation
 import pygame
 
 
+FieldSize = namedtuple('FieldSize', ['width', 'height'])
+
+
 def generate_playfield(_playfield_height: int, _playfield_width: int) -> List[List[int]]:
     """
     Create a matrix from lists, with the specified height and width.
@@ -116,7 +119,6 @@ class Playfield:
 
     def get_size(self):
         """Return the current field size."""
-        FieldSize = namedtuple('FieldSize', ['width', 'height'])
         return FieldSize(self.width, self.height)
 
     def randomize(self, multiplier: float = 0.5):

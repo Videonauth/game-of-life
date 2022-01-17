@@ -20,6 +20,16 @@ import pygame
 # initialize colour class
 colours = Colour()
 
+Button = namedtuple('Button', ['label',
+                               'colour',
+                               'top_x',
+                               'top_y',
+                               'bottom_x',
+                               'bottom_y',
+                               'surface',
+                               'hover_surface',
+                               ])
+
 
 class GUI:
     """GUI class contains everything belonging to output and the window."""
@@ -83,15 +93,6 @@ class GUI:
             pygame.draw.rect(_surface_hover, colour, (3, 3, width - 6, height - 6), 1)
             _surface_hover.blit(text, ((width / 2) - (_text_boundary.width / 2),
                                        (height / 2) - (_text_boundary.height / 2)))
-        Button = namedtuple('Button', ['label',
-                                       'colour',
-                                       'top_x',
-                                       'top_y',
-                                       'bottom_x',
-                                       'bottom_y',
-                                       'surface',
-                                       'hover_surface',
-                                       ])
         return Button(label, colour, top_x, top_y, top_x + width, top_y + height, _surface, _surface_hover)
 
     def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
