@@ -36,7 +36,7 @@ class TestPlayingFieldFactory:
     @pytest.mark.parametrize('_height,_width', [[1, 2], [2, 1], [3, 4], [4, 3]])
     def test_correct_height_and_width(self, _height, _width):
         """Test the height and width of a generated playfield is correct."""
-        _playfield = generate_playfield(_width, _height,)
+        _playfield = generate_playfield(_width, _height)
         assert len(_playfield) == _height
         for _row in _playfield:
             assert len(_row) == _width
