@@ -114,22 +114,22 @@ def main():
             for button in button_list:
                 if button.bottom_x > result.event_x > button.top_x and\
                         button.bottom_y > result.event_y > button.top_y:
-                    # menu clear
+
                     if button.label == 'Clear':
                         playfield.clear()
-                    # menu random
+
                     if button.label == 'Random':
                         playfield.randomize()
-                    # x +
+
                     if button.label == 'x +':
                         playfield.resize(_current.width + 1, _current.height)
-                    # x -
+
                     if button.label == 'x -':
                         playfield.resize(_current.width - 1, _current.height)
-                    # y +
+
                     if button.label == 'y +':
                         playfield.resize(_current.width, _current.height + 1)
-                    # y -
+
                     if button.label == 'y -':
                         playfield.resize(_current.width, _current.height - 1)
 
