@@ -32,12 +32,10 @@ class Timer:
             time.sleep(_wait)
             self._last_time = time.time()
             return False
-        elif self._current_time - self._last_time > frame_limit:
+        else:
             self._last_frame_time = (self._current_time - self._last_time)
             self._last_time = time.time()
             return True
-        else:
-            return False
 
     def last_frame_time(self):
         """Return last frame time."""
