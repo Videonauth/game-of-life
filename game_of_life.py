@@ -63,7 +63,7 @@ def main():
     gui = GUI("Conway's Game Of Life", window_size, 60)
 
     # setup playfield to with and height given
-    playfield_size = playfield_width, playfield_height = 20, 20
+    playfield_size = 20, 20
     playfield = Playfield(playfield_size, window_size)
 
     # initialize the handler for input and the timer
