@@ -103,7 +103,7 @@ Usage:
 
 Actions: 
     help|--help|-h|h            Display this help text
-    intsall                     Install the project dependencies
+    install                     Install the project dependencies
     resync-tags-from-remote     Delete local tags and pull from the remote
     sync                        Synchronise local branches with the remotes
     test                        Run project tests
