@@ -31,6 +31,17 @@ Button = namedtuple('Button', ['label',
                                ])
 
 
+def point_is_within_bounds(bound_x_min: int,
+                           bound_x_max: int,
+                           bound_y_min: int,
+                           bound_y_max: int,
+                           point_x: int,
+                           point_y: int,
+                           ) -> bool:
+    """Check whether a point exists within the given rectangular bounds."""
+    return (bound_x_min < point_x < bound_x_max) and (bound_y_min < point_y < bound_y_max)
+
+
 class GUI:
     """GUI class contains everything belonging to output and the window."""
 

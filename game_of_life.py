@@ -44,22 +44,12 @@ pygame documentation: https://www.pygame.org/docs/
 """
 from modules.gui import GUI
 from modules.gui import colours
+from modules.gui import point_is_within_bounds
 from modules.input import InputHandler
 from modules.playfield import Playfield
 from modules.timer import Timer
 
 import pygame
-
-
-def point_is_within_bounds(bound_x_min: int,
-                           bound_x_max: int,
-                           bound_y_min: int,
-                           bound_y_max: int,
-                           point_x: int,
-                           point_y: int,
-                           ) -> bool:
-    """Check whether a point exists within the given rectangular bounds."""
-    return (bound_x_min < point_x < bound_x_max) and (bound_y_min < point_y < bound_y_max)
 
 
 def main():
