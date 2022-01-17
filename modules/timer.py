@@ -23,17 +23,21 @@ class Timer:
         self._current_time = time.time()
         self._last_frame_time = 0.001
 
+    def timer_increment(self):
+        """Return the timer increment."""
+        return self._current_time - self._last_time
+
     def poll(self, frame_limit: float):
         """Wait if to fast, skip (return True) if to slow."""
         self._current_time = time.time()
-        if self._current_time - self._last_time <= frame_limit:
-            _wait = frame_limit - (self._current_time - self._last_time)
-            self._last_frame_time = (self._current_time - self._last_time) + _wait
+        if self.timer_increment() <= frame_limit:
+            _wait = frame_limit - self.timer_increment()
+            self._last_frame_time = self.timer_increment() + _wait
             time.sleep(_wait)
             self._last_time = time.time()
             return False
         else:
-            self._last_frame_time = (self._current_time - self._last_time)
+            self._last_frame_time = self.timer_increment()
             self._last_time = time.time()
             return True
 
