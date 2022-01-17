@@ -24,19 +24,19 @@ class TestPlayingFieldFactory:
     def test_non_positive_numbers_yield_exceptions(self, _height, _width):
         """Non-positive arguments yield ValueError."""
         with pytest.raises(ValueError):
-            generate_playfield(_height, _width)
+            generate_playfield(_width, _height)
 
     def test_exception_raised_if_both_dimensions_are_one(self):
         """Value error yielded if both dimensions have magnitude one."""
         _height = 1
         _width = 1
         with pytest.raises(ValueError):
-            generate_playfield(_height, _width)
+            generate_playfield(_width, _height)
 
     @pytest.mark.parametrize('_height,_width', [[1, 2], [2, 1], [3, 4], [4, 3]])
     def test_correct_height_and_width(self, _height, _width):
         """Test the height and width of a generated playfield is correct."""
-        _playfield = generate_playfield(_height, _width)
+        _playfield = generate_playfield(_width, _height,)
         assert len(_playfield) == _height
         for _row in _playfield:
             assert len(_row) == _width
