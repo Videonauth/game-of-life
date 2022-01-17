@@ -51,6 +51,17 @@ from modules.timer import Timer
 import pygame
 
 
+def point_is_within_bounds(bound_x_min: int,
+                           bound_x_max: int,
+                           bound_y_min: int,
+                           bound_y_max: int,
+                           point_x: int,
+                           point_y: int,
+                           ) -> bool:
+    """Check whether a point exists within the given rectangular bounds."""
+    return (bound_x_min < point_x < bound_x_max) and (bound_y_min < point_y < bound_y_max)
+
+
 def main():
     """
     Initiate Conway's Game Of Life (GoL).
@@ -104,17 +115,18 @@ def main():
         if handler.button_pressed() and not handler.locked() and result.event_button == 1:
             handler.lock()
             # set / unset single cells
-            if 0 < result.event_x < (playfield.width * playfield.cell_size) and\
-                    0 < result.event_y < (playfield.height * playfield.cell_size):
+            if point_is_within_bounds(0, playfield.width * playfield.cell_size,
+                                      0, playfield.height * playfield.cell_size,
+                                      result.event_x, result.event_y):
                 cell_x = result.event_x // playfield.cell_size
                 cell_y = result.event_y // playfield.cell_size
                 playfield.flip_cell(cell_x, cell_y)
             # process all buttons for input actions
             _current = playfield.get_size()
             for button in button_list:
-                if button.bottom_x > result.event_x > button.top_x and\
-                        button.bottom_y > result.event_y > button.top_y:
-
+                if point_is_within_bounds(button.bottom_x, button.top_x,
+                                          button.bottom_y, button.top_y,
+                                          result.event_x, result.event_y):
                     if button.label == 'Clear':
                         playfield.clear()
 
@@ -145,8 +157,10 @@ def main():
 
             # draw buttons
             for button in button_list:
-                if button.bottom_x > result.x > button.top_x and\
-                        button.bottom_y > result.y > button.top_y:
+
+                if point_is_within_bounds(button.bottom_x, button.top_x,
+                                          button.bottom_y, button.top_y,
+                                          result.x, result.y):
                     gui.add_surface(button.hover_surface, (button.top_x, button.top_y))
                 else:
                     gui.add_surface(button.surface, (button.top_x, button.top_y))
