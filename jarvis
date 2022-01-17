@@ -59,7 +59,7 @@ pull-remotes() {
             continue
         fi
 
-        if ! git rev-parse --abbrev-ref --symbolic-full-name @{u} &>/dev/null; then
+        if ! git rev-parse --abbrev-ref --symbolic-full-name '@{u}' &>/dev/null; then
             echo_warn 'Could not fetch branch upstream'
             continue
         fi
@@ -69,13 +69,13 @@ pull-remotes() {
             continue
         fi
 
-        if ! git merge "$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"; then
+        if ! git merge "$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}')"; then
             echo_err 'Failed to merge'
             continue
         fi
     done
 
-    if [[ "$(git branch | awk '/*/ { print $2 }')" !=  "${Branch}" ]]; then
+    if [[ "$(git branch | grep '\*' | awk '{ print $2 }')" !=  "${Branch}" ]]; then
         if ! git checkout "${Branch}"; then
             echo_err "Failed to move back to branch ${Branch}"
             return 1
