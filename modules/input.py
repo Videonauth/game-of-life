@@ -15,6 +15,9 @@ from collections import namedtuple
 import pygame
 
 
+HandlerPoll = namedtuple('HandlerPoll', ['x', 'y', 'event_x', 'event_y', 'event_button', 'event_key'])
+
+
 class InputHandler:
     """Handler Class."""
 
@@ -78,6 +81,4 @@ class InputHandler:
                 self._key_pressed = False
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
-
-        HandlerPoll = namedtuple('HandlerPoll', ['x', 'y', 'event_x', 'event_y', 'event_button', 'event_key'])
         return HandlerPoll(mouse_x, mouse_y, event_x, event_y, event_button, event_key)
