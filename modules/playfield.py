@@ -24,7 +24,7 @@ import pygame
 FieldSize = namedtuple('FieldSize', ['width', 'height'])
 
 
-def generate_playfield(_playfield_height: int, _playfield_width: int) -> List[List[int]]:
+def generate_playfield(_playfield_width: int, _playfield_height: int) -> List[List[int]]:
     """
     Create a matrix from lists, with the specified height and width.
 
@@ -65,7 +65,7 @@ def generate_seeded_playfield(
 ) -> List[List[int]]:
     """Create a seeded playfield."""
     # Create an initial playfield
-    _playfield = generate_playfield(_playfield_height, _playfield_width)
+    _playfield = generate_playfield(_playfield_width, _playfield_height)
 
     # Cast to int to be sure
     _number_of_seeded_cells = int(_number_of_seeded_cells)
@@ -102,7 +102,7 @@ class Playfield:
             pygame.init()
         self.surface = pygame.Surface((min(surface_size[0], surface_size[1]) - 20,
                                        min(surface_size[0], surface_size[1]) - 20))
-        self.field = generate_playfield(self.height, self.width)
+        self.field = generate_playfield(self.width, self.height)
         self.cell_size = (min(surface_size[0], surface_size[1]) - 20) // max(self.width, self.height)
 
     def flush_surface(self):
@@ -115,7 +115,7 @@ class Playfield:
 
     def clear(self):
         """Clear the playfield, i.e. setting each cell to zero."""
-        self.field = generate_playfield(self.height, self.width)
+        self.field = generate_playfield(self.width, self.height)
 
     def get_size(self):
         """Return the current field size."""
@@ -132,7 +132,7 @@ class Playfield:
             self.height = new_y
             _surface_rect = self.surface.get_rect()
             self.cell_size = (min(_surface_rect.width, _surface_rect.height) - 20) // max(self.width, self.height)
-            self.field = generate_playfield(new_y, new_x)
+            self.field = generate_playfield(new_x, new_y)
 
     def simulate(self):
         """Simulate one generation step on the playfield."""
