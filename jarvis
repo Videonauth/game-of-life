@@ -105,6 +105,7 @@ Actions:
     help|--help|-h|h            Display this help text
     install                     Install the project dependencies
     resync-tags-from-remote     Delete local tags and pull from the remote
+    run                         Run Game of Life
     sync                        Synchronise local branches with the remotes
     test                        Run project tests
     tree                        Show project contents
@@ -142,6 +143,11 @@ main() {
                 echo_err 'Failed to retrieve remote tags'
                 exit 1
             fi
+            exit
+            ;;
+
+        run)
+            ./game_of_life.py
             exit
             ;;
 
