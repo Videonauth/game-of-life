@@ -23,23 +23,30 @@ def simulation(playfield: list) -> list:
             _cell_current = playfield[_line][_cell]
             _neighbours = 0
 
-            # evaluate neighbours if existent/possible
-            if not _line - 1 < 0 and not _cell - 1 < 0:
-                _neighbours += playfield[_line - 1][_cell - 1]
-            if not _line - 1 < 0 and not _cell < 0:
-                _neighbours += playfield[_line - 1][_cell]
-            if not _line - 1 < 0 and not _cell + 1 > _playfield_width - 1:
-                _neighbours += playfield[_line - 1][_cell + 1]
-            if not _line < 0 and not _cell - 1 < 0:
-                _neighbours += playfield[_line][_cell - 1]
-            if not _line < 0 and not _cell + 1 > _playfield_width - 1:
-                _neighbours += playfield[_line][_cell + 1]
-            if not _line + 1 > _playfield_height - 1 and not _cell - 1 < 0:
-                _neighbours += playfield[_line + 1][_cell - 1]
-            if not _line + 1 > _playfield_height - 1 and not _cell < 0:
-                _neighbours += playfield[_line + 1][_cell]
-            if not _line + 1 > _playfield_height - 1 and not _cell + 1 > _playfield_width - 1:
-                _neighbours += playfield[_line + 1][_cell + 1]
+            # evaluate neighbours above if existent/possible
+            if not _line - 1 < 0:
+                if not _cell - 1 < 0:
+                    _neighbours += playfield[_line - 1][_cell - 1]
+                if not _cell < 0:
+                    _neighbours += playfield[_line - 1][_cell]
+                if not _cell + 1 > _playfield_width - 1:
+                    _neighbours += playfield[_line - 1][_cell + 1]
+
+            # evaluate neighbours on same level if existent/possible
+            if not _line < 0:
+                if not _cell - 1 < 0:
+                    _neighbours += playfield[_line][_cell - 1]
+                if not _cell + 1 > _playfield_width - 1:
+                    _neighbours += playfield[_line][_cell + 1]
+
+            # evaluate neighbours below if existent/possible
+            if not _line + 1 > _playfield_height - 1:
+                if not _cell - 1 < 0:
+                    _neighbours += playfield[_line + 1][_cell - 1]
+                if not _cell < 0:
+                    _neighbours += playfield[_line + 1][_cell]
+                if not _cell + 1 > _playfield_width - 1:
+                    _neighbours += playfield[_line + 1][_cell + 1]
 
             # evaluate cell survival
             if _cell_current == 1 and _neighbours < 2:
