@@ -49,19 +49,19 @@ class TestSeededPlayingFieldFactory:
     def test_non_positive_numbers_yield_exceptions(self, _height, _width):
         """Non-positive arguments yield ValueError."""
         with pytest.raises(ValueError):
-            generate_seeded_playfield(_height, _width, 0)
+            generate_seeded_playfield(_width, _height, 0)
 
     def test_exception_raised_if_both_dimensions_are_one(self):
         """Value error yielded if both dimensions have magnitude one."""
         _height = 1
         _width = 1
         with pytest.raises(ValueError):
-            generate_seeded_playfield(_height, _width, 0)
+            generate_seeded_playfield(_width, _height, 0)
 
     @pytest.mark.parametrize('_height,_width', [[1, 2], [2, 1], [3, 4], [4, 3]])
     def test_correct_height_and_width(self, _height, _width):
         """Test the height and width of a generated playfield is correct."""
-        _playfield = generate_seeded_playfield(_height, _width, 0)
+        _playfield = generate_seeded_playfield(_width, _height, 0)
         assert len(_playfield) == _height
         for _row in _playfield:
             assert len(_row) == _width
@@ -73,7 +73,7 @@ class TestSeededPlayingFieldFactory:
         _width = 2
         _playfield_size = _height * _width
         with pytest.raises(ValueError) as ex:
-            generate_seeded_playfield(_height, _width, _seed)
+            generate_seeded_playfield(_width, _height, _seed)
         assert str(ex.value) == f'_number_of_seeded_cells too small: must be in the range [0, {_playfield_size}]'
 
     def test_seed_value_zero_yields_playfield_with_no_cells_mutated(self):
@@ -81,7 +81,7 @@ class TestSeededPlayingFieldFactory:
         _height = 2
         _width = 2
         _seed = 0
-        _playfield = generate_seeded_playfield(_height, _width, _seed)
+        _playfield = generate_seeded_playfield(_width, _height, _seed)
         expected = 0
         actual = sum([1 for _row in _playfield for _cell in _row if _cell == 1])
         assert actual == expected
@@ -93,7 +93,7 @@ class TestSeededPlayingFieldFactory:
         _width = 2
         _playfield_size = _height * _width
         with pytest.raises(ValueError) as ex:
-            generate_seeded_playfield(_height, _width, _seed)
+            generate_seeded_playfield(_width, _height, _seed)
         assert str(ex.value) == f'_number_of_seeded_cells too large: must be in the range [0, {_playfield_size}]'
 
     def test_seed_value_of_size_playfield_size_yields_correct_number_of_mutated_cells(self):
@@ -105,7 +105,7 @@ class TestSeededPlayingFieldFactory:
         _width = 2
         _playfield_size = _height * _width
         _seed = _playfield_size
-        _playfield = generate_seeded_playfield(_height, _width, _seed)
+        _playfield = generate_seeded_playfield(_width, _height, _seed)
         expected = _playfield_size
         actual = sum([1 for _row in _playfield for _cell in _row if _cell == 1])
         assert actual == expected
@@ -115,7 +115,7 @@ class TestSeededPlayingFieldFactory:
         """Test a seed value yields a playfield with the correct number of mutated cells."""
         _height = 5
         _width = 5
-        _playfield = generate_seeded_playfield(_height, _width, _seed)
+        _playfield = generate_seeded_playfield(_width, _height, _seed)
         expected = _seed
         actual = sum([1 for _row in _playfield for _cell in _row if _cell == 1])
         assert actual == expected
