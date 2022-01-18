@@ -118,3 +118,10 @@ class GUI:
         text = self.font.render(label, True, colour)
         self.window.blit(text, pos_abs)
         return text
+
+    def add_rectangle(self, left: int = 0, top: int = 0, width: int = 10, height: int = 10,
+                      colour: Tuple[int, int, int] = colours.black):
+        """"Draw a rectangle on the screen."""
+        _surface = pygame.Surface((width, height))
+        pygame.draw.rect(_surface, colour, (0, 0, width, height), 1)
+        self.window.blit(_surface, (left, top))
