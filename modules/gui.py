@@ -98,6 +98,7 @@ class GUI:
         _surface.blit(text, ((width / 2) - (_text_boundary.width / 2), (height / 2) - (_text_boundary.height / 2)))
         # draw and return tuple for clickable surface positions
         self.window.blit(_surface, (left, top))
+        # draw the hover image or make a copy of the normal surface
         if hover_colour is not None:
             _surface_hover.fill(hover_colour)
             pygame.draw.rect(_surface_hover, colour, (0, 0, width, height), 1)
