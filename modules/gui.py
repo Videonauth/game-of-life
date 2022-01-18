@@ -112,3 +112,9 @@ class GUI:
     def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
         """Draw a surface onto the internal window class."""
         self.window.blit(surface, pos_abs)
+
+    def add_text(self, label: str, pos_abs: Tuple[int, int], colour):
+        """Draw a string to screen at position."""
+        text = self.font.render(label, True, colour)
+        self.window.blit(text, pos_abs)
+        return text
