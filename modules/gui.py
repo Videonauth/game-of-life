@@ -104,6 +104,8 @@ class GUI:
             pygame.draw.rect(_surface_hover, colour, (3, 3, width - 6, height - 6), 1)
             _surface_hover.blit(text, ((width / 2) - (_text_boundary.width / 2),
                                        (height / 2) - (_text_boundary.height / 2)))
+        else:
+            _surface_hover.blit(_surface, (0, 0))
         return Button(label, colour, left, top, left + width, top + height, _surface, _surface_hover)
 
     def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
