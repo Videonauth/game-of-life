@@ -72,8 +72,8 @@ class GUI:
     def add_button(self,
                    label: str,
                    colour: Tuple[int, int, int] = colours.black,
-                   top_x: int = 0,
-                   top_y: int = 0,
+                   left: int = 0,
+                   top: int = 0,
                    width: int = 420,
                    height: int = 40,
                    background_image: pygame.Surface = None,
@@ -97,14 +97,14 @@ class GUI:
         _text_boundary = text.get_rect()
         _surface.blit(text, ((width / 2) - (_text_boundary.width / 2), (height / 2) - (_text_boundary.height / 2)))
         # draw and return tuple for clickable surface positions
-        self.window.blit(_surface, (top_x, top_y))
+        self.window.blit(_surface, (left, top))
         if hover_colour is not None:
             _surface_hover.fill(hover_colour)
             pygame.draw.rect(_surface_hover, colour, (0, 0, width, height), 1)
             pygame.draw.rect(_surface_hover, colour, (3, 3, width - 6, height - 6), 1)
             _surface_hover.blit(text, ((width / 2) - (_text_boundary.width / 2),
                                        (height / 2) - (_text_boundary.height / 2)))
-        return Button(label, colour, top_x, top_y, top_x + width, top_y + height, _surface, _surface_hover)
+        return Button(label, colour, left, top, left + width, top + height, _surface, _surface_hover)
 
     def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
         """Draw a surface onto the internal window class."""
