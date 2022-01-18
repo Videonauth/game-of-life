@@ -79,6 +79,14 @@ def main():
                                   colours.white,
                                   window_height + 10, 110,
                                   hover_colour=colours.medium_grey),
+                   gui.add_button('% +',
+                                  colours.white,
+                                  window_height + 10, 160, 60,
+                                  hover_colour=colours.medium_grey),
+                   gui.add_button('% -',
+                                  colours.white,
+                                  window_width - 70, 160, 60,
+                                  hover_colour=colours.medium_grey),
                    gui.add_button('x +',
                                   colours.white,
                                   window_height + 10, 210, 60,
@@ -97,6 +105,7 @@ def main():
                                   hover_colour=colours.medium_grey)]
 
     # setting up game loop
+    _random = 0.5
     while handler.running():
         # poll for input
         result = handler.poll()
@@ -121,7 +130,15 @@ def main():
                         playfield.clear()
 
                     if button.label == 'Random':
-                        playfield.randomize()
+                        playfield.randomize(_random)
+
+                    if button.label == '% +':
+                        if _random < 1:
+                            _random += 0.1
+
+                    if button.label == '% -':
+                        if _random > 0:
+                            _random -= 0.1
 
                     if button.label == 'x +':
                         playfield.resize(_current.width + 1, _current.height)
@@ -158,6 +175,10 @@ def main():
             # drawing playfield
             playfield.update_surface()
             gui.add_surface(playfield.surface, (10, 10))
+
+            gui.add_button(f'Random: %:{int(_random * 100)}',
+                           colours.white,
+                           window_height + 80, 160, 280)
 
             gui.add_button(f'Playfield: x: {playfield.width} y: {playfield.height}',
                            colours.white,
