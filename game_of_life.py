@@ -133,12 +133,12 @@ def main():
                         playfield.randomize(_random)
 
                     if button.label == '% +':
-                        if _random < 1:
-                            _random += 0.1
+                        if _random * 100 < 100:
+                            _random += 0.01
 
                     if button.label == '% -':
-                        if _random > 0:
-                            _random -= 0.1
+                        if _random * 100 > 0:
+                            _random -= 0.01
 
                     if button.label == 'x +':
                         playfield.resize(_current.width + 1, _current.height)
