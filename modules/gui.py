@@ -124,3 +124,8 @@ class GUI:
         """Draw a rectangle on the screen."""
         pygame.draw.rect(self.window, colour, (left, top, left + width, top + height), 1)
         return self.window
+
+    def add_line(self, begin_x: int, begin_y: int, end_x: int, end_y: int, colour: Tuple[int, int ,int]):
+        """Draw a line on the screen"""
+        pygame.draw.line(self.window, colour, (begin_x, begin_y), (end_x, end_y), 1)
+        return self.window
