@@ -203,7 +203,7 @@ def main():
                        height=90,
                        colour=window.stroke_colour)
             # output fps
-            gui.button(label=f'FPS: {(1 // timer.last_frame_time() )}',
+            gui.button(label=f'FPS: {round( 1 / timer.last_frame_time(), 2)}',
                        left=window_height + 10,
                        top=10,
                        colour=window.stroke_colour)
