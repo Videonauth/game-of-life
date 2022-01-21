@@ -27,8 +27,6 @@ Button = namedtuple('Button', ['label',
                                'top',
                                'right',
                                'bottom',
-                               'width',
-                               'height',
                                'colour',
                                'hover_colour',
                                'background_colour',
@@ -155,5 +153,5 @@ class GUI:
             pygame.draw.rect(_hover, self.window.stroke_colour, (3, 3, width - 6, height - 6), 1)
 
         # return button data set
-        return Button(label, left, top, left + width, top + height, width, height,
-                      colour, hover_colour, background_colour, _surface, _hover)
+        return Button(label, left, top, left + width, top + height, colour, hover_colour, background_colour,
+                      _surface, _hover)
