@@ -121,14 +121,20 @@ class GUI:
         """Define a Button and render it initially."""
         _surface = pygame.Surface((width, height))
         _hover = pygame.Surface((width, height))
+
+        # fill background with given colour or the set window background colour
         if background_colour is not None:
             _surface.fill(background_colour)
         else:
             _surface.fill(self.window.background_colour)
+
+        # fill hover image with either a given colour or the set window background colour (i.e. no hover)
         if hover_colour is not None:
             _hover.fill(hover_colour)
         else:
             _hover.fill(self.window.background_colour)
+
+        # draw button with either a supplied colour or with the window set stroke colour
         if colour is not None:
             text = self.window.font.render(label, True, colour)
             _text_boundary = text.get_rect()
@@ -147,5 +153,7 @@ class GUI:
             self.window.surface.blit(_surface, (left, top))
             pygame.draw.rect(_hover, self.window.stroke_colour, (0, 0, width, height), 1)
             pygame.draw.rect(_hover, self.window.stroke_colour, (3, 3, width - 6, height - 6), 1)
+
+        # return button data set
         return Button(label, left, top, left + width, top + height, width, height,
                       colour, hover_colour, background_colour, _surface, _hover)
