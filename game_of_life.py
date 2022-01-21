@@ -31,7 +31,7 @@ These rules, which compare the behavior of the automaton to real life, can be co
 
 1. Any live cell with two or three live neighbours survives.
 2. Any dead cell with three live neighbours becomes a live cell.
-3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+3. All the other live cells die in the next generation. Similarly, all other dead cells stay dead.
 
 The initial pattern constitutes the seed of the system. The first generation is created by applying the above rules
 simultaneously to every cell in the seed, live or dead; births and deaths occur simultaneously, and the
