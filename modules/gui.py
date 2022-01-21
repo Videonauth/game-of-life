@@ -51,11 +51,6 @@ def point_is_within_bounds(bound_x_min: int,
 class Window:
     """Window class."""
 
-    caption = ''
-    width = 1280
-    height = 840
-    frame_limit = 1 / 60
-
     def __init__(self, caption: str, window_size: Tuple[int, int], fps: int = 60):
         """Initialize the Window class."""
         if not pygame.get_init():
