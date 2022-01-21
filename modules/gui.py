@@ -5,11 +5,12 @@
 # ---------------------------------------------------------------------------
 # Author: Videonauth <videonauth@googlemail.com>
 # License: MIT (see LICENSE file)
-# Date: 11.01.22 - 22:55
+# Date: 20.01.22 - 23:40
+# Purpose: -
 # Written for: Python 3.9.5
 # ---------------------------------------------------------------------------
 
-"""GUI class."""
+"""Window and GUI class live here."""
 from collections import namedtuple
 from typing import Tuple
 
@@ -17,17 +18,22 @@ from modules.colour import Colour
 
 import pygame
 
-# initialize colour class
+
 colours = Colour()
 
+
 Button = namedtuple('Button', ['label',
-                               'colour',
                                'left',
                                'top',
                                'right',
                                'bottom',
+                               'width',
+                               'height',
+                               'colour',
+                               'hover_colour',
+                               'background_colour',
                                'surface',
-                               'hover_surface',
+                               'hover',
                                ])
 
 
@@ -42,90 +48,109 @@ def point_is_within_bounds(bound_x_min: int,
     return (bound_x_min < point_x < bound_x_max) and (bound_y_min < point_y < bound_y_max)
 
 
-class GUI:
-    """GUI class contains everything belonging to output and the window."""
+class Window:
+    """Window class."""
 
-    def __init__(self, caption: str, window_size: Tuple[int, int], fps: int):
-        """Initialize the graphical user interface."""
-        # storing window dimensions for internal use
-        self._window_size = window_size
-        self._window_width = window_size[0]
-        self._window_height = window_size[1]
-        # calculate frame limit storing outward facing
-        self.frame_limit = 1 / fps
-        # init pygame if not already initialized
+    caption = ''
+    width = 1280
+    height = 840
+    frame_limit = 1 / 60
+
+    def __init__(self, caption: str, window_size: Tuple[int, int], fps: int = 60):
+        """Initialize the Window class."""
         if not pygame.get_init():
             pygame.init()
-        # create and name window
-        self.window = pygame.display.set_mode(window_size)
+        self.size = window_size
+        self.frame_limit = 1 / fps
+        self.surface = pygame.display.set_mode(window_size)
         pygame.display.set_caption(caption)
-        # setup default flush colour
-        self._flush_colour = colours.black
-        # setup font
+        self.background_colour = colours.bg_grey
+        self.stroke_colour = colours.light_grey
         self.font = pygame.font.SysFont('Arial', 20, False, False)
 
-    def flush(self):
-        """Fill the whole window output screen with a chosen colour."""
-        # flush output
-        self.window.fill(self._flush_colour)
+    def set_stroke_colour(self, colour: Tuple[int, int, int]):
+        """Set the line colour."""
+        self.stroke_colour = colour
 
-    def add_button(self,
-                   label: str,
-                   colour: Tuple[int, int, int] = colours.black,
-                   left: int = 0,
-                   top: int = 0,
-                   width: int = 420,
-                   height: int = 40,
-                   background_image: pygame.Surface = None,
-                   background_colour: Tuple[int, int, int] = None,
-                   hover_colour: Tuple[int, int, int] = None,
-                   ):
-        """Draw a button on the output screen and return the clickable border positions absolute."""
+    def set_background_colour(self, colour: Tuple[int, int, int]):
+        """Set the background colour."""
+        self.background_colour = colour
+
+    @staticmethod
+    def flip():
+        """Flip the screen buffer."""
+        pygame.display.flip()
+
+
+class GUI:
+    """GUI class."""
+
+    def __init__(self, window: Window):
+        """Initialize the GUI class."""
+        self.window = window
+
+    def fill(self, colour: Tuple[int, int, int] = None):
+        """Fill the screen with a colour."""
+        if colour is not None:
+            self.window.surface.fill(colour)
+        else:
+            self.window.surface.fill(self.window.background_colour)
+
+    def line(self, left: int, top: int, right: int, bottom: int, colour: Tuple[int, int, int]):
+        """Draw a line on the screen."""
+        pygame.draw.line(self.window.surface, colour, (left, top), (right, bottom))
+
+    def rectangle(self, left: int, top: int, width: int, height: int, colour: Tuple[int, int, int]):
+        """Draw a rectangle to the screen."""
+        pygame.draw.rect(self.window.surface, colour, (left, top, left + width, top + height))
+
+    def text(self, label: str, left: int, top: int, colour: Tuple[int, int, int]):
+        """Output text on the screen."""
+        text = self.window.font.render(label, True, colour)
+        self.window.surface.blit(text, (left, top))
+
+    def surface(self, surface: pygame.Surface, left: int, top: int):
+        """Add a surface on the screen."""
+        self.window.surface.blit(surface, (left, top))
+
+    def button(self,
+               label: str,
+               left: int,
+               top: int,
+               width: int = 420,
+               height: int = 40,
+               colour: Tuple[int, int, int] = None,
+               hover_colour: Tuple[int, int, int] = None,
+               background_colour: Tuple[int, int, int] = None,
+               ):
+        """Define a Button and render it initially."""
         _surface = pygame.Surface((width, height))
-        _surface_hover = pygame.Surface((width, height))
-        # fill if we got a colour we fill the button with it
+        _hover = pygame.Surface((width, height))
         if background_colour is not None:
             _surface.fill(background_colour)
-        # draw an image if we got one
-        if background_image is not None:
-            _surface.blit(background_image, (0, 0))
-        # draw the inner and outer border
-        pygame.draw.rect(_surface, colour, (0, 0, width, height), 1)
-        pygame.draw.rect(_surface, colour, (3, 3, width - 6, height - 6), 1)
-        # render the text centered
-        text = self.font.render(label, True, colour)
-        _text_boundary = text.get_rect()
-        _surface.blit(text, ((width / 2) - (_text_boundary.width / 2), (height / 2) - (_text_boundary.height / 2)))
-        # draw and return tuple for clickable surface positions
-        self.window.blit(_surface, (left, top))
-        # draw the hover image or make a copy of the normal surface
-        if hover_colour is not None:
-            _surface_hover.fill(hover_colour)
-            pygame.draw.rect(_surface_hover, colour, (0, 0, width, height), 1)
-            pygame.draw.rect(_surface_hover, colour, (3, 3, width - 6, height - 6), 1)
-            _surface_hover.blit(text, ((width / 2) - (_text_boundary.width / 2),
-                                       (height / 2) - (_text_boundary.height / 2)))
         else:
-            _surface_hover.blit(_surface, (0, 0))
-        return Button(label, colour, left, top, left + width, top + height, _surface, _surface_hover)
-
-    def add_surface(self, surface: pygame.Surface, pos_abs: Tuple[int, int]):
-        """Draw a surface onto the internal window class."""
-        self.window.blit(surface, pos_abs)
-
-    def add_text(self, label: str, pos_abs: Tuple[int, int], colour):
-        """Draw a string to screen at position."""
-        text = self.font.render(label, True, colour)
-        self.window.blit(text, pos_abs)
-        return text
-
-    def add_rectangle(self, left: int = 0, top: int = 0, width: int = 10, height: int = 10,
-                      colour: Tuple[int, int, int] = colours.black):
-        """Draw a rectangle on the screen."""
-        pygame.draw.rect(self.window, colour, (left, top, left + width, top + height), 1)
-        return self.window
-
-    def add_line(self, begin_x: int, begin_y: int, end_x: int, end_y: int, colour: Tuple[int, int ,int]):
-        """Draw a line on the screen"""
-        pygame.draw.line(self.window, colour, (begin_x, begin_y), (end_x, end_y), 1)
-        return self.window
+            _surface.fill(self.window.background_colour)
+        if hover_colour is not None:
+            _hover.fill(hover_colour)
+        else:
+            _hover.fill(self.window.background_colour)
+        if colour is not None:
+            text = self.window.font.render(label, True, colour)
+            _text_boundary = text.get_rect()
+            pygame.draw.rect(_surface, colour, (0, 0, width, height), 1)
+            pygame.draw.rect(_surface, colour, (3, 3, width - 6, height - 6), 1)
+            _surface.blit(text, ((width / 2) - (_text_boundary.width / 2), (height / 2) - (_text_boundary.height / 2)))
+            self.window.surface.blit(_surface, (left, top))
+            pygame.draw.rect(_hover, colour, (0, 0, width, height), 1)
+            pygame.draw.rect(_hover, colour, (3, 3, width - 6, height - 6), 1)
+        else:
+            text = self.window.font.render(label, True, self.window.stroke_colour)
+            _text_boundary = text.get_rect()
+            pygame.draw.rect(_surface, self.window.stroke_colour, (0, 0, width, height), 1)
+            pygame.draw.rect(_surface, self.window.stroke_colour, (3, 3, width - 6, height - 6), 1)
+            _surface.blit(text, ((width / 2) - (_text_boundary.width / 2), (height / 2) - (_text_boundary.height / 2)))
+            self.window.surface.blit(_surface, (left, top))
+            pygame.draw.rect(_hover, self.window.stroke_colour, (0, 0, width, height), 1)
+            pygame.draw.rect(_hover, self.window.stroke_colour, (3, 3, width - 6, height - 6), 1)
+        return Button(label, left, top, left + width, top + height, width, height,
+                      colour, hover_colour, background_colour, _surface, _hover)
