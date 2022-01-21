@@ -43,13 +43,12 @@ python 3.9 documentation: https://docs.python.org/3.9/
 pygame documentation: https://www.pygame.org/docs/
 """
 from modules.gui import GUI
+from modules.gui import Window
 from modules.gui import colours
 from modules.gui import point_is_within_bounds
 from modules.input import InputHandler
 from modules.playfield import Playfield
 from modules.timer import Timer
-
-import pygame
 
 
 def main():
@@ -60,7 +59,8 @@ def main():
     """
     # define window size and initialize GUI class
     window_size = window_width, window_height = 1280, 840
-    gui = GUI("Conway's Game Of Life", window_size, 60)
+    window = Window("Conway's Game of Life", window_size, 60)
+    gui = GUI(window)
 
     # setup playfield to with and height given
     playfield_size = 20, 20
@@ -71,38 +71,52 @@ def main():
     handler = InputHandler()
 
     # define UI buttons
-    button_list = [gui.add_button('Clear',
-                                  colours.white,
-                                  window_height + 10, 60,
-                                  hover_colour=colours.medium_grey),
-                   gui.add_button('Random',
-                                  colours.white,
-                                  window_height + 10, 110,
-                                  hover_colour=colours.medium_grey),
-                   gui.add_button('% +',
-                                  colours.white,
-                                  window_height + 10, 160, 60,
-                                  hover_colour=colours.medium_grey),
-                   gui.add_button('% -',
-                                  colours.white,
-                                  window_width - 70, 160, 60,
-                                  hover_colour=colours.medium_grey),
-                   gui.add_button('x +',
-                                  colours.white,
-                                  window_height + 10, 210, 60,
-                                  hover_colour=colours.medium_grey),
-                   gui.add_button('x -',
-                                  colours.white,
-                                  window_width - 70, 210, 60,
-                                  hover_colour=colours.medium_grey),
-                   gui.add_button('y +',
-                                  colours.white,
-                                  window_height + 10, 260, 60,
-                                  hover_colour=colours.medium_grey),
-                   gui.add_button('y -',
-                                  colours.white,
-                                  window_width - 70, 260, 60,
-                                  hover_colour=colours.medium_grey)]
+    button_list = [gui.button(label='Clear',
+                              left=window_height + 10,
+                              top=60,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey),
+                   gui.button(label='Random',
+                              left=window_height + 10,
+                              top=110,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey),
+                   gui.button(label='% +',
+                              left=window_height + 10,
+                              top=160,
+                              width=60,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey),
+                   gui.button(label='% -',
+                              left=window_width - 70,
+                              top=160,
+                              width=60,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey),
+                   gui.button(label='x +',
+                              left=window_height + 10,
+                              top=210,
+                              width=60,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey),
+                   gui.button(label='x -',
+                              left=window_width - 70,
+                              top=210,
+                              width=60,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey),
+                   gui.button(label='y +',
+                              left=window_height + 10,
+                              top=260,
+                              width=60,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey),
+                   gui.button(label='y -',
+                              left=window_width - 70,
+                              top=260,
+                              width=60,
+                              colour=window.stroke_colour,
+                              hover_colour=colours.medium_grey)]
 
     # setting up game loop
     _random = 0.5
@@ -157,9 +171,9 @@ def main():
             handler.lock()
             playfield.simulate()
 
-        if not timer.poll(gui.frame_limit):
+        if not timer.poll(window.frame_limit):
             # flush window and surface
-            gui.flush()
+            gui.fill()
             playfield.flush_surface()
 
             # draw buttons
@@ -168,28 +182,34 @@ def main():
                 if point_is_within_bounds(button.left, button.right,
                                           button.top, button.bottom,
                                           result.x, result.y):
-                    gui.add_surface(button.hover_surface, (button.left, button.top))
+                    gui.surface(button.hover, button.left, button.top)
                 else:
-                    gui.add_surface(button.surface, (button.left, button.top))
+                    gui.surface(button.surface, button.left, button.top)
 
             # drawing playfield
             playfield.update_surface()
-            gui.add_surface(playfield.surface, (10, 10))
+            gui.surface(playfield.surface, 10, 10)
 
-            gui.add_button(f'Random: %:{int(_random * 100)}',
-                           colours.white,
-                           window_height + 80, 160, 280)
+            gui.button(label=f'Random: %:{int(_random * 100)}',
+                       left=window_height + 80,
+                       top=160,
+                       width=280,
+                       colour=window.stroke_colour)
 
-            gui.add_button(f'Playfield: x: {playfield.width} y: {playfield.height}',
-                           colours.white,
-                           window_height + 80, 210, 280, 90)
+            gui.button(label=f'Playfield: x: {playfield.width} y: {playfield.height}',
+                       left=window_height + 80,
+                       top=210,
+                       width=280,
+                       height=90,
+                       colour=window.stroke_colour)
             # output fps
-            gui.add_button(f'FPS: {(1 // timer.last_frame_time() )}',
-                           colours.white,
-                           window_height + 10, 10)
+            gui.button(label=f'FPS: {(1 // timer.last_frame_time() )}',
+                       left=window_height + 10,
+                       top=10,
+                       colour=window.stroke_colour)
 
             # flip screen buffer
-            pygame.display.flip()
+            window.flip()
 
 
 if __name__ == '__main__':
